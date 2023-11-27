@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "strictPropertyInitialization": false
+    }
+}

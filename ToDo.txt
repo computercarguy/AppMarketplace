@@ -1,0 +1,66 @@
+Create webhook for completed payments
+ - Test webhook
+Move "Stripe Account" page under "Account" page
+ - Rename to "Payment Methods"
+Add "Utilities" page as links to all Utilities
+ - Redirect after login to use different site/utility (so Utilities can use their own Login prompt)
+Passthrough account validation and logout (so utilities use this project to validate accounts, instead of accessing the OAuth2 API directly)
+Add "disable" to Account page
+Update Market API to check against whitelist
+Finish logout on the client side
+
+** VNext
+Update OAuth2 DB for user permissions 
+Allow mobile apps to use OAuth2 for login
+ - Switch Scoreboard Everywhere to use OAuth2 logins
+Allow other devs to reference this app for logins and purchases (?)
+Allow "X free uses/months"
+Allow coupons/sales
+Build user, app, and payment "admin" app
+ - Allow other devs access to add, update, and maintain their apps and payment info
+Add multi-factor authentication through text message (MessageBird API?)
+Log errors to DB
+ - Market API
+ - OAuth2 API
+ - Client
+Have checkout for one-time pay apps
+Have checkout for subscriptions as well as credits
+ - Allow price reductions for bulk credit purchases
+ - Allow price reductions for buying multiple months in advance
+  - Use pre-purchased months first
+  - Send email when months are out/low
+  - Continue subscription at full price after pre-paid months run out
+Create table to track invoice progress from cart to paid to refunded, etc.
+Change hard coded webmaster email address to AWS key store address
+Change hard coded no-reply password to AWS key store address
+Create unit tests for front end
+Create unit tests for Node API
+Administrator access for:
+ - looking at payments
+ - adding, removing, and updating:
+   - apps
+   - users
+
+** Done:
+Forgot Username
+Send email for account disable
+Send email for password reset
+Send email for forgot user name 
+Send email for requesting password
+Send email for account creation
+Login page
+Forgot Username page
+Forgot password page
+Create user page
+Reset password with login
+Reset password without login
+Account page
+Password reset link expires after 30 minutes
+Get Stripe payments working
+Add event to remove all InvoiceItem where Qty = 0
+Update "utilitiescredits" table after purchase
+Create "Payment complete" page
+Send "I confirm..." checkboxes from client to server and save in invoice table
+Update OAuth2 DB for site whitelist
+Updated Market API to use Swagger
+Notify account creation of used email address

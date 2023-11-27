@@ -1,0 +1,40 @@
+{
+    "loginUrl": "http://localhost:3001/",
+    "apiUrl": "http://localhost:3002/",
+    "errorMessage": "Something went wrong.",
+    "stripe": {
+        "testClient": "pk_test_fXeW7axblBRBXBgWRppIu6Z9",
+        "testServer": "sk_test_EKj3uCDQmXYIUGx6tFm5mL6m",
+        "createPaymentIntent": "stripe/createPaymentIntent",
+        "paymentProcessed": "stripe/paymentProcessed",
+        "paymentMethods": "stripe/paymentMethods",
+        "updatePaymentIntent": "stripe/updatePaymentIntent",
+        "apiVersion": "2023-10-16"
+    },
+    "urls": {
+        "auth": {
+            "login": "auth/login",
+            "register": "auth/register",
+            "validateUser": "auth/validate",
+            "getUserId": "auth/userid"
+        },
+        "user": {
+            "updateUser": "user/updateUser",
+            "updatePassword": "user/updatePassword",
+            "disableUser": "user/disable" ,
+            "createPasswordReset": "user/createPasswordReset" ,
+            "doPasswordReset": "user/doPasswordReset" ,
+            "forgotUsername": "user/forgotUsername" ,
+            "getUser": "user/",
+            "logout" : "logout/"
+        },
+        "credits": {
+            "getCredits": "credits",
+            "updateCredits": "credits/update"
+        },
+        "utilities": {
+            "getUtilitites": "utilities",
+            "update": "utilities/update"
+        }
+    }
+}
