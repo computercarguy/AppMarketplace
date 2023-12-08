@@ -1,70 +1,19 @@
-# Getting Started with Create React App
+This is currently a work in progress, so use this at your own risk. I wouldn't even call it beta, as there's still functionality I need to write, as well as adding automated tests, documentation, and even fully testing everything from the ground up.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# App Marketplace
 
-## Available Scripts
+## Eric's Gear
 
-In the project directory, you can run:
+### By Eric Ingamells
 
-### `npm start`
+This utility is designed to be a gathering of other apps that require payment for their use. It can be one time use, pas as you go, monthly subscriptions, or whatever. In this utility, the main idea for payments is a credit. The credit can be any monetary amount, but it will be the same for all apps for easy usage. Each app can use different amounts of credits, so there is some ability to change how much each app costs.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+One of the key features of this utility is that it uses the NodeOAuth2 API for login to allow multiple apps to use the same login information. This prevents duplication of effort for the programmer having to recreate login functionality for every app, as well as preventing duplication on the part of the user in having to register for every single app individually. There will still be some duplication, since each app will need to be able to login from their own hosting site. Some duplication can still occur with the user will having to login on each site, if they don't log into this utility first and link to the utility they want to use.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+That last sentence is a little confusing, so I'll try to explain it better. The user will have to use this utility to create a account, but once they do, they can go to each app URI and login in there without having to use this utility. By doing that, they will have to log into each app individually. Using the "Utilities" page of this app, the user can login once and by choosing an app to visit, their credentials/token will be transmitted to the app so they don't have to login again.
 
-### `npm test`
+When they use the same login across various apps, they can simply log out in one app, or this utility, and they will be logged out on all other apps and this utility.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To help simplfy logins, the apps can access this utility for their login needs, rather than directly accessing the NodeOAuth2 API. The login information is simply passed through this interface to the NodeOAuth2 API and back again. This way you don't have to keep track of which API to access when, you just access this API for both logins and credits/payments. You also don't have to change each individual app if you change the login API for this utility. If you find a different/better/easier login API to use for this utility, you can switch to it by making changes to only this utility and not the other apps, as long as you point those apps to this utility for their login functionality.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Another key feature is that this utility prevents the duplication of payment method integrations. The app developer doesn't have to repeat the same integration across multiple apps, and the user doesn't have to duplicate entry of their payment method in every app. Some payment methods are fairly simple to reuse as a user, like PayPal and Stripe, where the same account can be used across multiple apps, not not every payment processor is that simple to use. Integrating payment methods are usually fairly time intensive to create and test, since they can have so many parts to implement for security. This utility just tries to simplify that by using a single interface for all apps that need it.

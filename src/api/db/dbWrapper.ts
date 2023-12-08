@@ -1,19 +1,19 @@
 // Reference: https://www.npmjs.com/package/mysql2
 
-import { OkPacket, ProcedureCallPacket, QueryError, ResultSetHeader, RowDataPacket, createPool } from 'mysql2';
+import { OkPacket, Pool, ProcedureCallPacket, QueryError, ResultSetHeader, RowDataPacket, createPool } from 'mysql2';
 import { Service } from 'typedi';
+import useAwsSecrets from '../hooks/useAwsSecrets';
 
 @Service()
 export class DbWrapper {
-    private pool = createPool({
-        user: "ericsgearguest",
-        host: "localhost",
-        database: "ericsgear",
-        password: "N0ne1N0ne1!",
-        port: 3306
-    });
+    private pool: Pool = null;
 
-    query(queryString: string, queryValues: object, cbFunc: (arg0: { error: any; results: any; }) => void) {
+    async query(queryString: string, queryValues: object, cbFunc: (arg0: { error: any; results: any; }) => void) {
+        if (!this.pool) {
+            let secrets = await useAwsSecrets(null);
+            this.setPool(secrets);
+        }
+
         let parameterizedQuery = this.queryFormat(queryString, queryValues);
 
         this.pool.query(parameterizedQuery, (error, results) => {
@@ -37,7 +37,12 @@ export class DbWrapper {
         });
     }
 
-    healthCheck() {
+    async healthCheck() {
+        if (!this.pool) {
+            let secrets = await useAwsSecrets(null);
+            this.setPool(secrets);
+        }
+
         this.pool.getConnection((error, connection) => {
             connection.ping((err) => {
                 if (err) throw err;
@@ -52,5 +57,17 @@ export class DbWrapper {
             error: error,
             results: results ? results : null,
         };
+    }
+
+    private setPool(secrets) {
+        if (secrets) {
+            this.pool = createPool({
+                user: secrets.user,
+                host: secrets.host,
+                database: secrets.database,
+                password: secrets.password,
+                port: secrets.port
+            });
+        }
     }
 }

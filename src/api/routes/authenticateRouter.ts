@@ -5,9 +5,9 @@ import { Authenticate } from '../repos/authenticate';
 export class AuthenticateRouter {
     setupRouter(): Router {
         let authenticate = Container.get(Authenticate);
-        let authenticateRouter = Router();
+        let router = Router();
 
-        authenticateRouter.post('/auth/login',  (req, res) => {  
+        router.post('/auth/login',  (req, res) => {  
             /*  
                 #swagger.parameters['body'] = { in: 'body', description: 'text', required: true, schema: {
                     username: 'JohnDoe',
@@ -18,11 +18,11 @@ export class AuthenticateRouter {
             authenticate.login(req, res);
         });
 
-        authenticateRouter.post('/auth/logout', authenticate.logout);
-        authenticateRouter.post("/auth/register", authenticate.registerUser);
-        authenticateRouter.get("/auth/validate", authenticate.validateUser);
-        authenticateRouter.get("/auth/userid", authenticate.getUserId);
+        router.post('/auth/logout', authenticate.logout);
+        router.post("/auth/register", authenticate.registerUser);
+        router.get("/auth/validate", authenticate.validateUser);
+        router.get("/auth/userid", authenticate.getUserId);
         
-        return authenticateRouter;
+        return router;
     }
 }

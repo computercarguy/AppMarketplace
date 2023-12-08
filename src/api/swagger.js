@@ -2,7 +2,7 @@ const swaggerAutogen = require('swagger-autogen')();
 
 const doc = {
   info: {
-    title: "Eric's Gear Market API",
+    title: "Eric's Gear Marketplace API",
     description: ''
   },
   host: 'localhost:3002',

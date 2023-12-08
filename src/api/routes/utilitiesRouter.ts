@@ -5,10 +5,10 @@ import Container from "typedi";
 export class UtilitiesRouter {
     setupRouter(): Router {
         let utilities = Container.get(Utilities);
-        let utilitiesRouter = Router();
+        let router = Router();
         
-        utilitiesRouter.get('/utilities', utilities.getUtility);
+        router.get('/utilities', utilities.getUtility);
         
-        return utilitiesRouter;
+        return router;
     }
 }

@@ -5,13 +5,14 @@ import Container from "typedi";
 export class StripeRouter {
     setupRouter(): Router {
         let stripePayments = Container.get(StripePayments);
-        let stripeRouter = Router();
+        let router = Router();
         
-        stripeRouter.post('/stripe/createPaymentIntent', stripePayments.createPaymentIntent);
-        stripeRouter.post('/stripe/paymentProcessed', stripePayments.paymentProcessed);
-        stripeRouter.get('/stripe/paymentMethods', stripePayments.getPaymentMethods);
-        stripeRouter.put('/stripe/updatePaymentIntent', stripePayments.updatePaymentIntent);
-        stripeRouter.post("/webhook", stripePayments.webhook);
-        return stripeRouter;
+        router.post('/stripe/createPaymentIntent', stripePayments.createPaymentIntent);
+        router.post('/stripe/paymentProcessed', stripePayments.paymentProcessed);
+        router.get('/stripe/paymentMethods', stripePayments.getPaymentMethods);
+        router.put('/stripe/updatePaymentIntent', stripePayments.updatePaymentIntent);
+        router.post("/webhook", stripePayments.webhook);
+        
+        return router;
     }
 }

@@ -1,19 +1,19 @@
 Create webhook for completed payments
  - Test webhook
-Move "Stripe Account" page under "Account" page
- - Rename to "Payment Methods"
 Add "Utilities" page as links to all Utilities
  - Redirect after login to use different site/utility (so Utilities can use their own Login prompt)
-Passthrough account validation and logout (so utilities use this project to validate accounts, instead of accessing the OAuth2 API directly)
-Add "disable" to Account page
 Update Market API to check against whitelist
 Finish logout on the client side
+Show Stripe account info and payment methods on "Payment Accounts" page
 
 ** VNext
+Move this ToDo list to online task management
 Update OAuth2 DB for user permissions 
 Allow mobile apps to use OAuth2 for login
  - Switch Scoreboard Everywhere to use OAuth2 logins
 Allow other devs to reference this app for logins and purchases (?)
+ - Charge for service
+ - Make disbursing payments to devs easy/automated
 Allow "X free uses/months"
 Allow coupons/sales
 Build user, app, and payment "admin" app
@@ -31,8 +31,6 @@ Have checkout for subscriptions as well as credits
   - Send email when months are out/low
   - Continue subscription at full price after pre-paid months run out
 Create table to track invoice progress from cart to paid to refunded, etc.
-Change hard coded webmaster email address to AWS key store address
-Change hard coded no-reply password to AWS key store address
 Create unit tests for front end
 Create unit tests for Node API
 Administrator access for:
@@ -64,3 +62,11 @@ Send "I confirm..." checkboxes from client to server and save in invoice table
 Update OAuth2 DB for site whitelist
 Updated Market API to use Swagger
 Notify account creation of used email address
+Change hard coded webmaster email address to AWS key store address
+Change hard coded no-reply password to AWS key store
+Passthrough account validation and logout (so utilities use this project to validate accounts, instead of accessing the OAuth2 API directly)
+Add "disable" to Account page
+Move "Stripe Account" page under "Account" page
+ - Rename to "Payment Accounts"
+Move hard coded DB password to AWS key store
+Move hard coded DB username, db name, port, and host to AWS key store

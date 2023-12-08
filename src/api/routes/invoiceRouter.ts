@@ -5,10 +5,10 @@ import { Invoices } from '../repos/invoices';
 export class InvoiceRouter {
     setupRouter(): Router {
         let invoices = Container.get(Invoices);
-        let invoiceRouter = Router();
+        let router = Router();
         
-        invoiceRouter.get('/stripe/invoices', invoices.getInvoices);
+        router.get('/stripe/invoices', invoices.getInvoices);
         
-        return invoiceRouter;
+        return router;
     }
 }
