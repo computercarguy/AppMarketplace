@@ -1,10 +1,12 @@
+** ToDo
 Create webhook for completed payments
  - Test webhook
-Add "Utilities" page as links to all Utilities
- - Redirect after login to use different site/utility (so Utilities can use their own Login prompt)
 Update Market API to check against whitelist
 Finish logout on the client side
 Show Stripe account info and payment methods on "Payment Accounts" page
+Replace "link" version of username with dropdown menu for "Log Off"
+Add search to Utilities page
+Make Utilities list panel scrollable
 
 ** VNext
 Move this ToDo list to online task management
@@ -70,3 +72,7 @@ Move "Stripe Account" page under "Account" page
  - Rename to "Payment Accounts"
 Move hard coded DB password to AWS key store
 Move hard coded DB username, db name, port, and host to AWS key store
+Add "Utilities" page as links to all Utilities
+ - Redirect after login to use different site/utility (so Utilities can use their own Login prompt)
+Move UtilitiesList to left nav
+ - Open Utility within IFrame or something similar

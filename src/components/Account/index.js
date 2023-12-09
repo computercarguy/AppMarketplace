@@ -7,13 +7,14 @@ import CreateAccount from '../CreateAccount';
 import CreditsAvailable from '../CreditsAvailable';
 import ResetPassword from '../ResetPassword';
 import useValidateLogin from '../../hooks/useValidateLogin';
+import UtilitiesPage from '../UtilitiesPage';
 
 class App extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            accountPage: "CreditsAvailable",
+            accountPage: "Utilities",
             SetActivePage: props.setActivePage,
             user: null
         };
@@ -56,6 +57,9 @@ class App extends Component {
     render () {
         let content;
         switch (this.state.accountPage) {
+            case "Utilities" :
+                content = <UtilitiesPage/>;
+                break;
             case "StripeAccount" :
                 content = <StripeAccount/>;
                 break;
@@ -77,6 +81,8 @@ class App extends Component {
         return (
             <div className="center column">
                 <div className='row'>
+                    <div><button type="button" className="hyperlink" onClick={() => this.SetAccountPage("Utilities")}>Utilities</button></div>
+                    <div className='spacer' />
                     <div><button type="button" className="hyperlink" onClick={() => this.SetAccountPage("CreditsAvailable")}>Credits Available</button></div>
                     <div className='spacer' />
                     <div><button type="button" className="hyperlink" onClick={() => this.SetAccountPage("PurchaseCredits")}>Purchase Credits</button></div>

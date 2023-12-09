@@ -12,7 +12,7 @@ export class UtilitiesDb {
 
     getUtilities(cbFunc: any) {
         // TODO: Rewrite this to not need a subquery
-        let query = `SELECT utilities.Id, Name, Description, 
+        let query = `SELECT utilities.Id, Name, Description, Url,
             (SELECT Price FROM utilitiesPrice where StartDate < NOW() AND UtilitiesId = utilities.Id ORDER BY StartDate DESC LIMIT 1) as Price 
             FROM utilities 
             ORDER BY Name ASC `; 
