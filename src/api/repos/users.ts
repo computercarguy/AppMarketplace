@@ -5,12 +5,15 @@ import { ApiResponse } from "../models/ApiResponse";
 import useGetBearerToken from "../hooks/useGetBearerToken";
 import * as settings from '../../Settings.json';
 import useFetch from "../hooks/useFetch";
+import useAwsSecrets from "../hooks/useAwsSecrets";
 
 @Service()
 export class Users {
-    update(req: Request, res: Response) {
+    private loginUrl: String = null;
+
+    async update(req: Request, res: Response) {
         let token = useGetBearerToken(req);
-        let url = settings.loginUrl + settings.urls.user.updateUser;
+        let url = await this.getLoginUrl() + settings.urls.user.updateUser;
 
         useFetch(url, "post", token, req.body, (response: ApiResponse) => {
             useSendResponse(
@@ -21,9 +24,9 @@ export class Users {
         });
     }
 
-    updatePassword(req: Request, res: Response) {
+    async updatePassword(req: Request, res: Response) {
         let token = useGetBearerToken(req);
-        let url = settings.loginUrl + settings.urls.user.updatePassword;
+        let url = await this.getLoginUrl() + settings.urls.user.updatePassword;
 
         useFetch(url, "post", token, req.body, (response: ApiResponse) => {
             useSendResponse(
@@ -34,9 +37,9 @@ export class Users {
         });
     }
 
-    disable(req: Request, res: Response) {
+    async disable(req: Request, res: Response) {
         let token = useGetBearerToken(req);
-        let url = settings.loginUrl + settings.urls.user.disableUser;
+        let url = await this.getLoginUrl() + settings.urls.user.disableUser;
 
         useFetch(url, "post", token, req.body, (response: ApiResponse) => {
             useSendResponse(
@@ -47,9 +50,9 @@ export class Users {
         });
     }
 
-    createPasswordReset(req: Request, res: Response) {
+    async createPasswordReset(req: Request, res: Response) {
         let token = useGetBearerToken(req);
-        let url = settings.loginUrl + settings.urls.user.createPasswordReset;
+        let url = await this.getLoginUrl() + settings.urls.user.createPasswordReset;
 
         useFetch(url, "post", token, req.body, (response: ApiResponse) => {
             useSendResponse(
@@ -60,9 +63,9 @@ export class Users {
         });
     }
 
-    doPasswordReset(req: Request, res: Response) {
+    async doPasswordReset(req: Request, res: Response) {
         let token = useGetBearerToken(req);
-        let url = settings.loginUrl + settings.urls.user.doPasswordReset;
+        let url = await this.getLoginUrl() + settings.urls.user.doPasswordReset;
 
         useFetch(url, "post", token, req.body, (response: ApiResponse) => {
             useSendResponse(
@@ -73,9 +76,9 @@ export class Users {
         });
     }
 
-    forgotUsername(req: Request, res: Response) {
+    async forgotUsername(req: Request, res: Response) {
         let token = useGetBearerToken(req);
-        let url = settings.loginUrl + settings.urls.user.forgotUsername;
+        let url = await this.getLoginUrl() + settings.urls.user.forgotUsername;
 
         useFetch(url, "post", token, req.body, (response: ApiResponse) => {
             useSendResponse(
@@ -86,9 +89,9 @@ export class Users {
         });
     }
 
-    getUser(req: Request, res: Response) {
+    async getUser(req: Request, res: Response) {
         let token = useGetBearerToken(req);
-        let url = settings.loginUrl + settings.urls.user.getUser;
+        let url = await this.getLoginUrl() + settings.urls.user.getUser;
 
         useFetch(url, "get", token, null, (response: ApiResponse) => {
             useSendResponse(
@@ -97,5 +100,14 @@ export class Users {
                 response.error
             );
         });
+    }
+    
+    private async getLoginUrl() {
+        if (this.loginUrl === null) {
+            let secrets = await useAwsSecrets(null);
+            this.loginUrl = secrets.login;
+        }
+
+        return this.loginUrl;
     }
 }

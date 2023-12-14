@@ -1,10 +1,7 @@
 {
-    "loginUrl": "http://localhost:3001/",
-    "apiUrl": "http://localhost:3002/",
     "errorMessage": "Something went wrong.",
     "stripe": {
-        "testClient": "pk_test_fXeW7axblBRBXBgWRppIu6Z9",
-        "testServer": "sk_test_EKj3uCDQmXYIUGx6tFm5mL6m",
+        "key": "stripe/key",
         "createPaymentIntent": "stripe/createPaymentIntent",
         "paymentProcessed": "stripe/paymentProcessed",
         "paymentMethods": "stripe/paymentMethods",

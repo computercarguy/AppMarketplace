@@ -1,3 +1,5 @@
+require('./config/env');
+
 import "reflect-metadata";
 import * as express from "express";
 import * as cors from 'cors';

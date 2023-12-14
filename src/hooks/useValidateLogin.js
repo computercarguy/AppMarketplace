@@ -1,7 +1,7 @@
 import settings from '../Settings.json';
 
 const useValidateLogin = (authToken, setUser) => {
-    const url = settings.apiUrl + settings.urls.auth.validateUser;
+    const url = process.env.REACT_APP_apiUrl + settings.urls.auth.validateUser;
 
     fetch(url, { 
         method: 'get', 

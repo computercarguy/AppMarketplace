@@ -56,7 +56,7 @@ class ResetPassword extends Component {
     }
 
     SubmitForm = (formProps) => {
-        const url = settings.apiUrl + (this.state.guid && this.state.guid.trim() !== "" ? settings.urls.user.doPasswordReset : settings.urls.user.updatePassword);
+        const url = process.env.REACT_APP_apiUrl + (this.state.guid && this.state.guid.trim() !== "" ? settings.urls.user.doPasswordReset : settings.urls.user.updatePassword);
         const me = this;
         const token = sessionStorage.getItem('token');
 

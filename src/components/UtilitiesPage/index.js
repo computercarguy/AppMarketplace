@@ -2,14 +2,13 @@ import '../../App.css';
 import settings from '../../Settings.json';
 import { Component } from 'react';
 
-const token = sessionStorage.getItem('token');
-
 class UtilitiesPage extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             UtilityOptions: [],
+            SearchOptions: [],
             Url: null,
             Title: null
         };
@@ -22,8 +21,9 @@ class UtilitiesPage extends Component {
     }
 
     componentDidMount() {
-        const url = settings.apiUrl + settings.urls.utilities.getUtilitites;
+        const url = process.env.REACT_APP_apiUrl + settings.urls.utilities.getUtilitites;
         const me = this;
+        const token = sessionStorage.getItem('token');
 
         fetch(url, { 
             method: 'get', 
@@ -35,7 +35,8 @@ class UtilitiesPage extends Component {
         })
         .then(function(resJson) {
             if (resJson && resJson.message) {
-                me.setState({UtilityOptions: resJson.message, Loading: false});
+                resJson.message.sort((a,b) => a.Name > b.Name ? 1 : -1);
+                me.setState({UtilityOptions: resJson.message, SearchOptions: resJson.message, Loading: false});
             }
             else {
                 console.log(resJson);
@@ -50,20 +51,37 @@ class UtilitiesPage extends Component {
         this.setState({Url: utility.Url, Title: utility.Name});
     }
 
+    SearchNavigation = (term) => {
+        console.log(term);
+        if (term && term.length > 2) {
+            let utilities = this.state.UtilityOptions.filter((item) => {return item.Name.toLowerCase().includes(term.toLowerCase())});
+
+            this.setState({SearchOptions: utilities});
+        }
+        else {
+            this.setState({SearchOptions: this.state.UtilityOptions});
+        }
+    }
+
     render() {
         return (
             <div className="column" style={{width:"1200px"}}>
                 <h3>Utilities:</h3>
                 <div className='row'>
-                    <div style={{width:"20%"}}>
-                        {
-                            this.state.UtilityOptions.map((element, i) => <div key={i}>
-                                <button class="hyperlink" onClick={this.SetIFrame(element)} title={element.Description}>{element.Name}</button>
-                            </div>)
-                        }
+                    <div className="column" style={{width:"20%"}} >
+                        <div className='row'>
+                            Search: <input type="text" onChange={(e) => this.SearchNavigation(e.target.value)}></input>
+                        </div>
+                        <div className='divScrollY'>
+                            {
+                                this.state.SearchOptions.map((element, i) => <div key={i}>
+                                    <button class="hyperlink" onClick={() => this.SetIFrame(element)} title={element.Description}>{element.Name}</button>
+                                </div>)
+                            }
+                        </div>
                     </div>
                     <div style={{width:"80%"}}>
-                        <iframe title={this.state.Title} src={this.state.Url} id="utilityIFrame" height="1000" width="1000"/>
+                        <iframe title={this.state.Title} src={this.state.Url} id="utilityIFrame" height="600" width="1000"/>
                     </div>
                 </div>
             </div>

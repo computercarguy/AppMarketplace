@@ -2,11 +2,10 @@
 Create webhook for completed payments
  - Test webhook
 Update Market API to check against whitelist
-Finish logout on the client side
 Show Stripe account info and payment methods on "Payment Accounts" page
-Replace "link" version of username with dropdown menu for "Log Off"
-Add search to Utilities page
-Make Utilities list panel scrollable
+Display existing payment methods on Purchase Credits page
+Create API endpoint to get credits for specific app
+Create API endpoint to use credits for specific app
 
 ** VNext
 Move this ToDo list to online task management
@@ -21,7 +20,7 @@ Allow coupons/sales
 Build user, app, and payment "admin" app
  - Allow other devs access to add, update, and maintain their apps and payment info
 Add multi-factor authentication through text message (MessageBird API?)
-Log errors to DB
+Log errors to DB (replace console.log)
  - Market API
  - OAuth2 API
  - Client
@@ -76,3 +75,15 @@ Add "Utilities" page as links to all Utilities
  - Redirect after login to use different site/utility (so Utilities can use their own Login prompt)
 Move UtilitiesList to left nav
  - Open Utility within IFrame or something similar
+Finish logout on the client side
+Make Utilities list panel scrollable
+Make Utilities iframe panel scrollable
+Replace "link" version of username with dropdown menu for "Log Off"
+Move Account page under username menu
+Figure out why IFrame causes CPU usage to spike
+Add search to Utilities page
+Sort Utilities by Name on Utilitites, Credits Avail, and Purchase Credits pages
+Move Stripe API key to AWS Secrets Manager
+ - Add API endpoint for Client to get Stripe API
+Move apiUrl to environment file
+Move loginUrl to AWS Secure Storage

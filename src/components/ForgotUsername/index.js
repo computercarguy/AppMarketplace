@@ -27,7 +27,7 @@ class ForgotUsername extends Component {
     }
 
     SubmitForm = (formProps) => {
-        const url = settings.apiUrl + settings.urls.user.forgotUsername;
+        const url = process.env.REACT_APP_apiUrl + settings.urls.user.forgotUsername;
 
         useLoginFetch(url, formProps, "There was a problem sending the email.", this.state.SetActivePage);
     }

@@ -15,7 +15,7 @@ class Login extends Component{
         event.preventDefault();
         const formData = new FormData(event.target);
         const formProps = Object.fromEntries(formData);
-        const url = settings.apiUrl + settings.urls.auth.login;
+        const url = process.env.REACT_APP_apiUrl + settings.urls.auth.login;
         const me = this;
 
         fetch(url, {

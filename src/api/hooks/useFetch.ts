@@ -1,14 +1,27 @@
-function useFetch(url: string, method: string, authToken: string | null, body: string, cbFunc: Function) {
-    let header = authToken 
-        ? new Headers({ 'Authorization': "bearer " + authToken })
-        : new Headers();
+function useFetch(url: string, method: string, authToken: string | null, body: string, cbFunc: Function, contentType: string = null) {
+    let headerObject = {};
+
+    if (authToken){
+        headerObject["Authorization"] = "bearer " + authToken;
+    }
+
+    if (contentType){
+        headerObject["Content-Type"] = contentType;
+    }
 
     fetch(url, { 
         method: method,
-        headers: header,
+        headers: new Headers(headerObject),
         body: body
     }).then(function(res) {
-        return res.json();
+        const dataType = res.headers.get("content-type");
+
+        if (dataType === "application/json; charset=utf-8"){
+            return res.json();
+        }
+        else {
+            return res.text();
+        }
     })
     .then(function(resJson) {
         if (resJson) {

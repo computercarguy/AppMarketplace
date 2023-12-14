@@ -23,7 +23,8 @@ class CreateAccount extends Component {
             Business: true,
             PageType: Number(props.pageType),
             PasswordsMatch: true,
-            FormMessage: ""
+            FormMessage: "",
+            Logout: props.logout
         };
     }
 
@@ -72,7 +73,7 @@ class CreateAccount extends Component {
     }
 
     SubmitForm = (formProps) => {
-        const url = settings.apiUrl + (this.state.PageType === 0 ? settings.urls.auth.register : settings.urls.user.updateUser);
+        const url = process.env.REACT_APP_apiUrl + (this.state.PageType === 0 ? settings.urls.auth.register : settings.urls.user.updateUser);
         const me = this;
 
         fetch(url, { 
@@ -135,8 +136,8 @@ class CreateAccount extends Component {
 
     GetUser = () => {
         const me = this;
-
-        const url = settings.apiUrl + settings.urls.user.getUser;
+        const token = sessionStorage.getItem('token');
+        const url = process.env.REACT_APP_apiUrl + settings.urls.user.getUser;
 
         fetch(url, { 
             method: 'get', 
@@ -173,9 +174,10 @@ class CreateAccount extends Component {
 
     DisableAccount = () => {
         let result = window.confirm('Are you sure you want to disable your account?');
+        let me = this;
 
         if (result) {
-            const url = settings.apiUrl + settings.urls.user.disableUser;
+            const url = process.env.REACT_APP_apiUrl + settings.urls.user.disableUser;
 
             fetch(url, { 
                 method: 'post', 
@@ -188,6 +190,7 @@ class CreateAccount extends Component {
             .then(function(resJson) {
                 if (resJson.message === "Success") {
                     alert("User disabled.");
+                    me.state.Logout();
                 }
             });
         }

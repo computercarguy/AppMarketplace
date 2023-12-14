@@ -15,6 +15,7 @@ import { UtilitiesCreditsDb } from "../db/utilitiesCreditsDb";
 import { UtilitiesCreditsData } from "../models/UtilitiesCreditsData";
 import { InvoiceItem } from "../models/InvoiceItem";
 import { EventLogDb } from "../db/eventLogDb";
+import useAwsSecrets from "../hooks/useAwsSecrets";
 
 
 const config:Stripe.StripeConfig = {
@@ -26,24 +27,24 @@ const config:Stripe.StripeConfig = {
     },
     typescript: true,
   };
-const stripe = new Stripe(settings.stripe.testServer, config);
+let stripeKey = null;
+let stripe = null;
 const auth = Container.get(Authentication);
 const eventLogDb = Container.get(EventLogDb);
 
-function getTotal(body: UtilityPurchase){
-    let total = 0;
-    
-    body.Items.forEach(item => {
-        total += item.Price * item.Qty;
-    });
+GetAwsSecrets();
 
-    return total;
+function GetAwsSecrets() {
+    useAwsSecrets((secrets) => {
+        stripeKey = secrets.stripekey;
+        stripe = new Stripe(stripeKey, config);
+    });
 }
 
 @Service()
 export class StripePayments {
     createPaymentIntent(req: Request, res: Response) {
-        let total = getTotal(req.body);
+        let total = this.getTotal(req.body);
         let paymentOptionsDb = Container.get(PaymentOptionsDb);
         let stripeCustomer = Container.get(StripeCustomer);
         let invoicesDb = Container.get(InvoicesDb);
@@ -142,7 +143,6 @@ export class StripePayments {
     }
 
     paymentProcessed(req: Request, res: Response) {
-        console.log(req.body);
         if (!req || !req.body || !req.body.id) {
             useSendResponse(res);
             return;
@@ -172,6 +172,17 @@ export class StripePayments {
             });
 
             useSendResponse(res, "success", null);
+        });
+    }
+
+    getKey(req: Request, res: Response) {
+        auth.getUserId(req, async (userId: number) => {
+            if (!userId) {
+                useSendResponse(res);
+                return;
+            }
+
+            useSendResponse(res, stripeKey, null);
         });
     }
 
@@ -240,5 +251,15 @@ export class StripePayments {
                 });
             });
         });
+    }
+
+    private getTotal(body: UtilityPurchase){
+        let total = 0;
+        
+        body.Items.forEach(item => {
+            total += item.Price * item.Qty;
+        });
+    
+        return total;
     }
 };

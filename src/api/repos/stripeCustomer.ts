@@ -1,7 +1,7 @@
 import Container, { Service } from "typedi";
 import Stripe from 'stripe';
 import { PaymentOptionsDb } from "../db/paymentOptionsDb";
-import * as settings from '../../Settings.json';
+import useAwsSecrets from "../hooks/useAwsSecrets";
 
 
 const config:Stripe.StripeConfig = {
@@ -13,7 +13,17 @@ const config:Stripe.StripeConfig = {
     },
     typescript: true,
   };
-const stripe = new Stripe(settings.stripe.testServer, config);
+let stripeKey = null;
+let stripe = null;
+
+GetAwsSecrets();
+
+function GetAwsSecrets() {
+    useAwsSecrets((secrets) => {
+        stripeKey = secrets.stripekey;
+        stripe = new Stripe(stripeKey, config);
+    });
+}
 
 @Service()
 export class StripeCustomer {

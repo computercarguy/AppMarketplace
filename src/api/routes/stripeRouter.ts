@@ -7,11 +7,12 @@ export class StripeRouter {
         let stripePayments = Container.get(StripePayments);
         let router = Router();
         
-        router.post('/stripe/createPaymentIntent', stripePayments.createPaymentIntent);
-        router.post('/stripe/paymentProcessed', stripePayments.paymentProcessed);
-        router.get('/stripe/paymentMethods', stripePayments.getPaymentMethods);
-        router.put('/stripe/updatePaymentIntent', stripePayments.updatePaymentIntent);
-        router.post("/webhook", stripePayments.webhook);
+        router.get('/stripe/key', (req, res) => stripePayments.getKey(req, res));
+        router.post('/stripe/createPaymentIntent', (req, res) => stripePayments.createPaymentIntent(req, res));
+        router.post('/stripe/paymentProcessed', (req, res) => stripePayments.paymentProcessed(req, res));
+        router.get('/stripe/paymentMethods', (req, res) => stripePayments.getPaymentMethods(req, res));
+        router.put('/stripe/updatePaymentIntent', (req, res) => stripePayments.updatePaymentIntent(req, res));
+        router.post("/webhook", (req, res) => stripePayments.webhook(req, res));
         
         return router;
     }

@@ -6,10 +6,9 @@ import questionCircle from '../../images/question-circle.svg';
 import Cart from './Cart';
 import useFetchGet from '../../hooks/useFetchGet';
 
-const token = sessionStorage.getItem('token');
-
 function GetPaymentMethods() {
-    let url = settings.apiUrl + settings.stripe.paymentMethods;
+    let url = process.env.REACT_APP_apiUrl + settings.stripe.paymentMethods;
+    const token = sessionStorage.getItem('token');
 
     useFetchGet(url, token, (resJson) => {
         console.log("useFetchGet");
@@ -27,7 +26,8 @@ class PurchaseCredits extends Component {
             Checkout: false,
             CheckoutTotal: 0,
             Loading: true,
-            PaymentSuccess: false
+            PaymentSuccess: false,
+            Stripekey: null
         };
     }
 
@@ -65,29 +65,38 @@ class PurchaseCredits extends Component {
         return total;
     }
 
-    componentDidMount() {
-        const url = settings.apiUrl + settings.urls.utilities.getUtilitites;
+    GetOptions = (token)  => {
+        const url = process.env.REACT_APP_apiUrl + settings.urls.utilities.getUtilitites;
         const me = this;
 
-        fetch(url, { 
-            method: 'get', 
-            headers: new Headers({
-                'Authorization': token
-            })
-        }).then(function(res) {
-            return res.json();
-        })
-        .then(function(resJson) {
-            if (resJson && resJson.message) {
+        useFetchGet(url, token, (resJson) => {
+            if (resJson.message) {
+                resJson.message.sort((a,b) => a.Name > b.Name ? 1 : -1);
                 me.setState({UtilityOptions: resJson.message, Loading: false});
             }
             else {
                 console.log(resJson);
             }
-        })
-        .catch(error => {
-            console.log(error);
         });
+    }
+
+    GetStripeKey = (token) => {
+        if (!this.state.Stripekey) {
+            const me = this;
+            const url = process.env.REACT_APP_apiUrl + settings.stripe.key;
+
+            useFetchGet(url, token, (resJson) => {
+                if (resJson.message) {
+                    me.setState({Stripekey: resJson.message});
+                }
+            });
+        }
+    }
+    componentDidMount() {
+        const token = sessionStorage.getItem('token');
+        
+        this.GetOptions(token);
+        this.GetStripeKey(token);
     }
 
     UpdateQty = (row, value) => {
@@ -193,7 +202,7 @@ class PurchaseCredits extends Component {
                 }
                 {this.state.Checkout && !this.state.PaymentSuccess &&
                     <div className="fill100" >
-                        <Cart items={this.state.SelectedOptions} total={this.state.CheckoutTotal} calculateTotal={this.CalculateTotal} paymentMethods={GetPaymentMethods()} paymentComplete={this.PaymentComplete}/>
+                        <Cart items={this.state.SelectedOptions} total={this.state.CheckoutTotal} calculateTotal={this.CalculateTotal} paymentMethods={GetPaymentMethods()} paymentComplete={this.PaymentComplete} stripekey={this.state.Stripekey}/>
                     </div>
                 }
                 {this.state.PaymentSuccess &&

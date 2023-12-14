@@ -19,7 +19,7 @@ class CreditsAvailable extends Component {
 
     componentDidMount() {
         const token = sessionStorage.getItem('token');
-        const url = settings.apiUrl + settings.urls.credits.getCredits;
+        const url = process.env.REACT_APP_apiUrl + settings.urls.credits.getCredits;
         const me = this;
 
         fetch(url, { 
@@ -32,6 +32,7 @@ class CreditsAvailable extends Component {
         })
         .then(function(resJson) {
             if (resJson && resJson.message) {
+                resJson.message.sort((a,b) => a.Name > b.Name ? 1 : -1);
                 me.setState({AvailableCredits: resJson.message});
             }
             else {

@@ -1,5 +1,5 @@
 import '../../App.css';
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import StripeAccount from '../StripeAccount';
 import PurchaseCredits from '../PurchaseCredits';
@@ -39,6 +39,7 @@ class App extends Component {
     }
 
     Logout = () => {
+        sessionStorage.setItem('token', null);
         this.state.SetActivePage("Login");
     }
 
@@ -47,6 +48,24 @@ class App extends Component {
 
         if (!this.state.user && token !== "") {
             useValidateLogin(token, this.SetUser);
+        }
+    }
+
+    LoginOrUser = () => {
+        if (this.state.user) {
+            return <Fragment>
+                <div class="dropdown">
+                    <button class="dropbtn">{this.state.user.Username} &#9660;</button>
+                    <div class="dropdown-content">
+                    <button type="button" className="hyperlink" onClick={() => this.SetAccountPage("AccountPage")}>Account</button>
+                    <br/>
+                    <button type="button" class="hyperlink" onClick={this.Logout}>Logout</button>
+                    </div>
+                </div> 
+            </Fragment>;
+        }
+        else {
+            return <button type="button" className="hyperlink" onClick={this.Logout} >Login</button>;
         }
     }
 
@@ -67,7 +86,7 @@ class App extends Component {
                 content = <PurchaseCredits/>;
                 break;
             case "AccountPage" :
-                content = <CreateAccount pageType="1" setActivePage={this.SetAccountPage}/>;
+                content = <CreateAccount pageType="1" setActivePage={this.SetAccountPage} logout={this.Logout}/>;
                 break;
             case "ResetPassword" :
                 content = <ResetPassword pageType="1" setActivePage={this.SetAccountPage}/>;
@@ -87,9 +106,7 @@ class App extends Component {
                     <div className='spacer' />
                     <div><button type="button" className="hyperlink" onClick={() => this.SetAccountPage("PurchaseCredits")}>Purchase Credits</button></div>
                     <div className='spacer' />
-                    <div><button type="button" className="hyperlink" onClick={() => this.SetAccountPage("AccountPage")}>Account</button></div>
-                    <div className='spacer' /> 
-                    <div><button type="button" className="hyperlink" >{this.state.user ? this.state.user.Username : "Login"}</button></div>
+                    <div>{this.LoginOrUser()}</div>
                 </div>
                 {content}
             </div>
