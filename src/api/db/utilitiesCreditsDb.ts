@@ -18,10 +18,18 @@ export class UtilitiesCreditsDb {
             WHERE OAuthUserId = :userId `; 
 
         if (data.UtilitiesId){
-            query += `AND UtilitiesId = :utilitiedId;`;
+            query += `AND UtilitiesId = :utilitiedId `;
         }
 
-        const values = {userId: data.OAuthUserId.toString(), utilitiedId: data.UtilitiesId ? data.UtilitiesId.toString() : null};
+        if (data.UtilitiesGuid){
+            query += `AND utilities.UniqueID = ':utilitiesGuid' `;
+        }
+
+        const values = {
+            userId: data.OAuthUserId.toString(), 
+            utilitiedId: data.UtilitiesId ? data.UtilitiesId.toString() : null,
+            utilitiesGuid: data.UtilitiesGuid
+        };
 
         this.dbPool.query(query, values, cbFunc);
     }
@@ -30,12 +38,20 @@ export class UtilitiesCreditsDb {
         this.getUtilitiesCredits(data, (results) => {
             if (results.results.length > 0) {
                 let record: UtilitiesCreditsData = results.results[0];
-                if (data.QuantityPurchased) {
+                if (data.UtilitiesId && data.QuantityPurchased) {
                     record.QuantityPurchased += Number(data.QuantityPurchased);
                 }
 
-                if (data.QuantityUsed) {
-                    record.QuantityUsed += Number(data.QuantityUsed);
+                if (!data.UtilitiesId && data.UtilitiesGuid && data.QuantityUsed) {
+                    let qtyUsed = Number(data.QuantityUsed);
+
+                    if (record.Available < qtyUsed) {
+                        cbFunc();
+                        return;
+                    }
+
+                    record.QuantityUsed += qtyUsed;
+                    record.Available -= qtyUsed;
                 }
                 
                 this.update(record, cbFunc);
@@ -43,7 +59,7 @@ export class UtilitiesCreditsDb {
             else {
                 this.insert(data, cbFunc);
             }
-        })
+        });
     }
 
     private insert(data: UtilitiesCreditsData, cbFunc: any) {

@@ -4,11 +4,11 @@ Create webhook for completed payments
 Update Market API to check against whitelist
 Show Stripe account info and payment methods on "Payment Accounts" page
 Display existing payment methods on Purchase Credits page
-Create API endpoint to get credits for specific app
-Create API endpoint to use credits for specific app
+Export SQL schema to add to repo
 
 ** VNext
 Move this ToDo list to online task management
+Write CMS for Utility, payment, user, and credit management
 Update OAuth2 DB for user permissions 
 Allow mobile apps to use OAuth2 for login
  - Switch Scoreboard Everywhere to use OAuth2 logins
@@ -87,3 +87,6 @@ Move Stripe API key to AWS Secrets Manager
  - Add API endpoint for Client to get Stripe API
 Move apiUrl to environment file
 Move loginUrl to AWS Secure Storage
+Add column to Utilities for GUID for non-linear unique/secret ID for utilities/apps to use credits and query credit qty
+Create API endpoint to get credits for specific app
+Create API endpoint to use credits for specific app

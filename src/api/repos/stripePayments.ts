@@ -244,7 +244,7 @@ export class StripePayments {
 
                 invoiceItemsDb.getInvoiceItems(results.results[0].Id, (invoiceItems: InvoiceItem[]) => {
                     invoiceItems.forEach((item: InvoiceItem) => {
-                        let utilitiesCredits: UtilitiesCreditsData = {OAuthUserId: userId, QuantityPurchased: item.Qty, UtilitiesId: item.Id, Id: null, Available: null, QuantityUsed: null};
+                        let utilitiesCredits: UtilitiesCreditsData = {OAuthUserId: userId, QuantityPurchased: item.Qty, UtilitiesId: item.Id, Id: null, Available: null, QuantityUsed: null, UtilitiesGuid: item.UtilitiesGuid};
 
                         utilitiesCreditsDb.upsert(utilitiesCredits, null);
                     });

@@ -15,12 +15,12 @@ let auth = Container.get(Authentication);
 export class UtilitiesCredits {
     getCredits(req: Request, res: Response) {
         auth.getUserId(req, (userId: number) => {
-            if (!userId) {
+            if (!userId || !req.body.utilitiesGuid) {
                 useSendResponse(res);
                 return;
             }
-            
-            let data: UserData = {OAuthUserId: userId, UtilitiesId: null};
+
+            let data: UserData = {OAuthUserId: userId, UtilitiesId: null, UtilitiesGuid: req.body.utilitiesGuid};
             
             utilitiesCreditsDb.getUtilitiesCredits(data, (response: ApiResponse) => 
                 useSendResponse(
@@ -32,19 +32,59 @@ export class UtilitiesCredits {
     }
     
     update(req: Request, res: Response) {
+        let data = req.body as UtilitiesCreditsData;
+
+        if (!data.UtilitiesGuid || !data.QuantityUsed) {
+            useSendResponse(res);
+            return;
+        }
+
         auth.getUserId(req, (userId: number) => {
             if (!userId) {
                 useSendResponse(res);
                 return;
             }
-
-            utilitiesCreditsDb.upsert(req.body as UtilitiesCreditsData, (response: UtilitiesCreditsData) => 
             
-            useSendResponse(
-                res,
-                response,
-                response == null ? settings.errorMessage : null
-            ));
+            data.OAuthUserId = userId;
+
+            utilitiesCreditsDb.getUtilitiesCredits(data, (response: ApiResponse) => 
+            {
+                if (!response || !response.results || response.results.length !== 1) {
+                    useSendResponse(res);
+                    return;
+                }
+
+                let utilityRecord = response.results[0] as UtilitiesCreditsData;
+
+                if (data.UtilitiesId && utilityRecord.Id != data.UtilitiesId) {
+                    useSendResponse(res);
+                    return;
+                }
+
+                data.UtilitiesId = null;
+
+                if (utilityRecord.Available < data.QuantityUsed) {
+                    useSendResponse(res);
+                    return;
+                }
+
+                utilitiesCreditsDb.upsert(data, (upsertResponse: ApiResponse) => 
+                {
+                    if (upsertResponse.results["affectedRows"] == 1) {
+                        useSendResponse(
+                            res,
+                            "complete",
+                            upsertResponse == null ? settings.errorMessage : null
+                        );
+
+                        return;
+                    }
+                    else {
+                        useSendResponse(res);
+                        return;
+                    }
+                });
+            });
         });
     }
 };

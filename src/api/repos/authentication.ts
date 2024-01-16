@@ -52,6 +52,11 @@ export class Authentication {
     private async getLoginUrl() {
         if (this.loginUrl === null) {
             let secrets = await useAwsSecrets(null);
+
+            if (!secrets) {
+                return null;
+            }
+
             this.loginUrl = secrets.login;
         }
 
