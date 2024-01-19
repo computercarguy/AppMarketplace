@@ -14,7 +14,7 @@ export class InvoicesDb {
         const values = {userId: userId.toString()};
         const whereClause = invoiceIds ? ` WHERE id IN ('${invoiceIds.join("','" + "'")}') ` : "";
 
-        const query = `SELECT OAuthUserId, status.Name as Status, PurchasedDate, paymentMethod.Name as PaymentMethod
+        const query = `SELECT OAuthUserId, status.Name as Status, PurchasedDate, paymentMethod.Name as PaymentMethod, total
             FROM invoice 
             LEFT JOIN invoicestatus on status.Id = invoice.StatusId
             LEFT JOIN paymentMethod on paymentMethod.Id = invoice.PaymentMethodId
@@ -36,7 +36,7 @@ export class InvoicesDb {
         this.dbPool.query(query, values, cbFunc);
     }
     
-    insertInvoice(userId: number, paymentMethodId: number, paymentIdentifier: string, cbFunc: any) {
+    insertInvoice(userId: number, paymentMethodId: number, paymentIdentifier: string, amount: number, cbFunc: any) {
         if (!userId) {
             if (cbFunc) {
                 cbFunc();
@@ -45,10 +45,10 @@ export class InvoicesDb {
             return;
         }
 
-        const values = {userId: userId.toString(), paymentMethodId: paymentMethodId.toString(), paymentIdentifier: paymentIdentifier};
+        const values = {userId: userId.toString(), paymentMethodId: paymentMethodId.toString(), paymentIdentifier: paymentIdentifier, amount: amount};
 
-        const query = `INSERT INTO invoice (OAuthUserId, StatusId, PaymentMethodId, CreatedDate, PaymentIdentifier)
-            VALUES (:userId, 1, :paymentMethodId, NOW(), ':paymentIdentifier');`; 
+        const query = `INSERT INTO invoice (OAuthUserId, StatusId, PaymentMethodId, CreatedDate, PaymentIdentifier, total)
+            VALUES (:userId, 1, :paymentMethodId, NOW(), ':paymentIdentifier', :amount);`; 
 
         this.dbPool.query(query, values, cbFunc);
     }
@@ -76,7 +76,7 @@ export class InvoicesDb {
         }
 
         const query = `UPDATE invoice 
-            SET StatusId = 5, 
+            SET StatusId = 2, 
                 PurchasedDate = NOW()
                 ${agreements}
             WHERE OAuthUserId = :userId AND paymentIdentifier = ':paymentIdentifier';`; 

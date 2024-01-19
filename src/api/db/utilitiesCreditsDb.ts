@@ -2,13 +2,16 @@ import { Inject, Service } from "typedi";
 import { UserData } from "../models/UserData";
 import { UtilitiesCreditsData } from "../models/UtilitiesCreditsData";
 import { DbWrapper } from "./dbWrapper";
+import { UtilitiesCreditsUsedDb } from "./utilitiesCreditsUsedDb";
 
 @Service()
 export class UtilitiesCreditsDb {
     private dbPool: DbWrapper;
+    private utilitiesCreditsUsedDb: UtilitiesCreditsUsedDb;
 
-    constructor(@Inject() injectedPool: DbWrapper) {
+    constructor(@Inject() injectedPool: DbWrapper, @Inject() injectedUtilitiesCreditsUsedDb: UtilitiesCreditsUsedDb) {
         this.dbPool = injectedPool;
+        this.utilitiesCreditsUsedDb = injectedUtilitiesCreditsUsedDb;
     }
 
     getUtilitiesCredits(data: UserData | UtilitiesCreditsData, cbFunc: any) {
@@ -22,7 +25,7 @@ export class UtilitiesCreditsDb {
         }
 
         if (data.UtilitiesGuid){
-            query += `AND utilities.UniqueID = ':utilitiesGuid' `;
+            query += `AND utilities.UniqueId = ':utilitiesGuid' `;
         }
 
         const values = {
@@ -38,6 +41,7 @@ export class UtilitiesCreditsDb {
         this.getUtilitiesCredits(data, (results) => {
             if (results.results.length > 0) {
                 let record: UtilitiesCreditsData = results.results[0];
+
                 if (data.UtilitiesId && data.QuantityPurchased) {
                     record.QuantityPurchased += Number(data.QuantityPurchased);
                 }
@@ -52,6 +56,8 @@ export class UtilitiesCreditsDb {
 
                     record.QuantityUsed += qtyUsed;
                     record.Available -= qtyUsed;
+
+                    this.utilitiesCreditsUsedDb.insert(record.Id, qtyUsed, null);
                 }
                 
                 this.update(record, cbFunc);

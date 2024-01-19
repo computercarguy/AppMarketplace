@@ -1,12 +1,11 @@
 ** ToDo
-Create webhook for completed payments
- - Test webhook
-Update Market API to check against whitelist
 Show Stripe account info and payment methods on "Payment Accounts" page
 Display existing payment methods on Purchase Credits page
-Export SQL schema to add to repo
 
 ** VNext
+Update Market API to check against whitelist
+Test webhook for completed payments
+ - Change updateInvoiceByPaymentIdentifier to set StatusId to 5, instead of 2
 Move this ToDo list to online task management
 Write CMS for Utility, payment, user, and credit management
 Update OAuth2 DB for user permissions 
@@ -90,3 +89,11 @@ Move loginUrl to AWS Secure Storage
 Add column to Utilities for GUID for non-linear unique/secret ID for utilities/apps to use credits and query credit qty
 Create API endpoint to get credits for specific app
 Create API endpoint to use credits for specific app
+Create webhook for completed payments
+Add Total column to invoice table
+Create utilitiescreditsused entry when credits are used
+Export login SQL schema to update in repo
+Export marketplace SQL schema to add to repo
+ - Move tables to separate DB
+ - Update DB login info
+ - Add table references/relations

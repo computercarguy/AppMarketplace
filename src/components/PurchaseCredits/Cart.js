@@ -8,7 +8,7 @@ export default function Cart(params) {
     const stripePromise = loadStripe(params.stripekey);
     const [clientSecret, setClientSecret] = useState("");
     const [paymentIntentId, setPaymentIntentId] = useState("");
-    const [ranUseEffect, setRanUseEffect] = useState("");
+    const [ranUseEffect, setRanUseEffect] = useState(false);
     const token = sessionStorage.getItem('token');
     const checkoutUrl = process.env.REACT_APP_apiUrl + settings.stripe.paymentProcess;
 

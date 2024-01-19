@@ -16,6 +16,7 @@ import { UtilitiesCreditsData } from "../models/UtilitiesCreditsData";
 import { InvoiceItem } from "../models/InvoiceItem";
 import { EventLogDb } from "../db/eventLogDb";
 import useAwsSecrets from "../hooks/useAwsSecrets";
+import { UtilityItems } from "../models/UtilityItems";
 
 
 const config:Stripe.StripeConfig = {
@@ -37,7 +38,7 @@ GetAwsSecrets();
 function GetAwsSecrets() {
     useAwsSecrets((secrets) => {
         stripeKey = secrets.stripekey;
-        stripe = new Stripe(stripeKey, config);
+        stripe = new Stripe(secrets.stripekey_private, config);
     });
 }
 
@@ -72,7 +73,7 @@ export class StripePayments {
                     }
                 });
 
-                invoicesDb.insertInvoice(userId, 1, paymentIntent.id, (results) => {
+                invoicesDb.insertInvoice(userId, 1, paymentIntent.id, paymentIntent.amount, (results) => {
                     invoiceItemsDb.upsertInvoiceItems(results.results.insertId, req.body.Items, null);
                 });
 
@@ -169,6 +170,11 @@ export class StripePayments {
 
             invoicesDb.getInvoiceByPaymentIdentifier(userId, req.body.id, (results) => {
                 invoiceItemsDb.upsertInvoiceItems(results.results[0].Id, req.body.Items, null);
+                let utilitiesCreditsDb = Container.get(UtilitiesCreditsDb);
+
+                req.body.Items.forEach((item: UtilityItems) => {
+                    utilitiesCreditsDb.upsert({OAuthUserId: userId, UtilitiesId: item.Id, QuantityPurchased: item.Qty} as UtilitiesCreditsData, null);
+                })
             });
 
             useSendResponse(res, "success", null);
