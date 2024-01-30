@@ -20,11 +20,11 @@ export class UtilitiesCreditsDb {
             Left Join utilities on utilities.Id = utilitiescredits.UtilitiesId 
             WHERE OAuthUserId = :userId `; 
 
-        if (data.UtilitiesId){
+        if (data.UtilitiesId) {
             query += `AND UtilitiesId = :utilitiedId `;
         }
 
-        if (data.UtilitiesGuid){
+        if (data.UtilitiesGuid) {
             query += `AND utilities.UniqueId = ':utilitiesGuid' `;
         }
 

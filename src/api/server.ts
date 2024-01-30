@@ -11,6 +11,7 @@ import { AuthenticateRouter } from "./routes/authenticateRouter";
 import { UserRouter } from "./routes/userRouter";
 import swaggerUi = require('swagger-ui-express');
 import swaggerDocument = require('./swagger-output.json');
+import { PaymentMethodImagesRouter } from "./routes/paymentmethodimagesRouter";
 
 const port = 3002;
 const app = express();
@@ -24,6 +25,7 @@ app.use(new StripeRouter().setupRouter());
 app.use(new InvoiceRouter().setupRouter());
 app.use(new AuthenticateRouter().setupRouter());
 app.use(new UserRouter().setupRouter());
+app.use(new PaymentMethodImagesRouter().setupRouter());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

@@ -49,7 +49,7 @@ class CreateAccount extends Component {
         if (!this.state.Business) {
             formProps["businessName"] = "";
         }
-        if (this.state.PageType === 0){
+        if (this.state.PageType === 0) {
             if (formProps["password"] !== formProps["password2"]) {
                 this.setState({PasswordsMatch: false});
                 return;
@@ -122,9 +122,6 @@ class CreateAccount extends Component {
                     <div className='rightColumn'>
                         <button type="button" onClick={this.ResetPasswod}>Reset Password</button>
                     </div>
-                </div>
-                <div className='row'>
-                    <button type="button" onClick={() => this.SetAccountPage("StripeAccount")}>Payment Accounts</button>
                 </div>
             </Fragment>;
         }

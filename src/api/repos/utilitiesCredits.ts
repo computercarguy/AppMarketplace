@@ -15,13 +15,13 @@ let auth = Container.get(Authentication);
 export class UtilitiesCredits {
     getCredits(req: Request, res: Response) {
         auth.getUserId(req, (userId: number) => {
-            if (!userId || !req.body.utilitiesGuid) {
+            if (!userId) {
                 useSendResponse(res);
                 return;
             }
 
-            let data: UserData = {OAuthUserId: userId, UtilitiesId: null, UtilitiesGuid: req.body.utilitiesGuid};
-            
+            let data: UserData = {OAuthUserId: userId, UtilitiesId: null, UtilitiesGuid: req.body.utilitiesGuid ?? null};
+
             utilitiesCreditsDb.getUtilitiesCredits(data, (response: ApiResponse) => 
                 useSendResponse(
                     res,

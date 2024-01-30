@@ -2,19 +2,9 @@ import { Component, Fragment } from 'react';
 import '../../App.css';
 import { DataGrid } from '@mui/x-data-grid';
 import settings from '../../Settings.json';
-import questionCircle from '../../images/question-circle.svg';
+import questionCircle from '../../images/question-circle.webp';
 import Cart from './Cart';
 import useFetchGet from '../../hooks/useFetchGet';
-
-function GetPaymentMethods() {
-    let url = process.env.REACT_APP_apiUrl + settings.stripe.paymentMethods;
-    const token = sessionStorage.getItem('token');
-
-    useFetchGet(url, token, (resJson) => {
-        console.log("useFetchGet");
-        console.log(resJson);
-    });
-}
 
 class PurchaseCredits extends Component {
     constructor(props) {
@@ -46,7 +36,7 @@ class PurchaseCredits extends Component {
     AddOption = (row) => {
         let option = this.FindOption(row);
 
-        if (option){
+        if (option) {
             option.Qty++;
             this.setState({SelectedOptions: this.state.SelectedOptions});
         }
@@ -92,6 +82,7 @@ class PurchaseCredits extends Component {
             });
         }
     }
+
     componentDidMount() {
         const token = sessionStorage.getItem('token');
         
@@ -109,7 +100,7 @@ class PurchaseCredits extends Component {
         else {
             let options = [];
             this.state.SelectedOptions.forEach(opt => {
-                if (opt.Id !== option.Id){
+                if (opt.Id !== option.Id) {
                     options.push(opt);
                 }
             });
@@ -202,7 +193,7 @@ class PurchaseCredits extends Component {
                 }
                 {this.state.Checkout && !this.state.PaymentSuccess &&
                     <div className="fill100" >
-                        <Cart items={this.state.SelectedOptions} total={this.state.CheckoutTotal} calculateTotal={this.CalculateTotal} paymentMethods={GetPaymentMethods()} paymentComplete={this.PaymentComplete} stripekey={this.state.Stripekey}/>
+                        <Cart items={this.state.SelectedOptions} total={this.state.CheckoutTotal} calculateTotal={this.CalculateTotal} paymentComplete={this.PaymentComplete} stripekey={this.state.Stripekey}/>
                     </div>
                 }
                 {this.state.PaymentSuccess &&

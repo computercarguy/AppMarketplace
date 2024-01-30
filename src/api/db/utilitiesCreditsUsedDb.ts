@@ -11,7 +11,7 @@ export class UtilitiesCreditsUsedDb {
 
     public insert(utilitiesCreditsId: number, quantityUsed: number, cbFunc: any) {
         if (!utilitiesCreditsId || quantityUsed < 1) {
-            if (cbFunc){
+            if (cbFunc) {
                 cbFunc();
             }
 

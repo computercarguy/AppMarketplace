@@ -32,6 +32,9 @@
         "utilities": {
             "getUtilitites": "utilities",
             "update": "utilities/update"
+        },
+        "paymentmethodimages": {
+            "getPaymentMethodImages": "paymentmethodimages/"
         }
     }
 }

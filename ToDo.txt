@@ -1,9 +1,14 @@
 ** ToDo
-Show Stripe account info and payment methods on "Payment Accounts" page
-Display existing payment methods on Purchase Credits page
+Show completed invoices on new "Invoices" page
+Password complexity
+Add "country" to OAuth user creation
+ - Update CreateCustomer for Stripe 
+Disable the "Purchase" button after it's clicked
+Reenable "Purchase" button if it's not successful
 
 ** VNext
 Update Market API to check against whitelist
+Allow custom password complexity
 Test webhook for completed payments
  - Change updateInvoiceByPaymentIdentifier to set StatusId to 5, instead of 2
 Move this ToDo list to online task management
@@ -97,3 +102,8 @@ Export marketplace SQL schema to add to repo
  - Move tables to separate DB
  - Update DB login info
  - Add table references/relations
+Display existing payment methods on Purchase Credits page
+Remove "Payment Accounts" button from Account page
+Fixed Stripe customer creation to include useful customer info
+Show Stripe account info and payment methods on new "Payment Accounts" page
+Show Stripe and Visa/MC/etc logos on Payment Accounts page in grid

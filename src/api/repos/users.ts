@@ -101,6 +101,15 @@ export class Users {
             );
         });
     }
+
+    async getOAuthUser(req: Request) {
+        let token = useGetBearerToken(req);
+        let url = await this.getLoginUrl() + settings.urls.user.getUser;
+        let response = await useFetch(url, "get", token, null, null);
+
+        return response.message;
+    }
+
     
     private async getLoginUrl() {
         if (this.loginUrl === null) {

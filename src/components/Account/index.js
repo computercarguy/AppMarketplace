@@ -1,13 +1,14 @@
 import '../../App.css';
 import React, { Component, Fragment } from "react";
 
-import StripeAccount from '../StripeAccount';
+import StripeAccount from '../PaymentAccounts';
 import PurchaseCredits from '../PurchaseCredits';
 import CreateAccount from '../CreateAccount';
 import CreditsAvailable from '../CreditsAvailable';
 import ResetPassword from '../ResetPassword';
 import useValidateLogin from '../../hooks/useValidateLogin';
 import UtilitiesPage from '../UtilitiesPage';
+import Invoices from '../Invoices';
 
 class App extends Component {
     constructor(props) {
@@ -59,6 +60,10 @@ class App extends Component {
                     <div class="dropdown-content">
                     <button type="button" className="hyperlink" onClick={() => this.SetAccountPage("AccountPage")}>Account</button>
                     <br/>
+                    <button type="button" className="hyperlink" onClick={() => this.SetAccountPage("StripeAccount")}>Payment Account</button>
+                    <br/>
+                    <button type="button" className="hyperlink" onClick={() => this.SetAccountPage("Invoices")}>Invoices</button>
+                    <br/>
                     <button type="button" class="hyperlink" onClick={this.Logout}>Logout</button>
                     </div>
                 </div> 
@@ -82,7 +87,10 @@ class App extends Component {
             case "StripeAccount" :
                 content = <StripeAccount/>;
                 break;
-             case "PurchaseCredits" :
+            case "Invoices" :
+                content = <Invoices/>;
+                break;
+            case "PurchaseCredits" :
                 content = <PurchaseCredits/>;
                 break;
             case "AccountPage" :

@@ -1,0 +1,14 @@
+import { Router } from 'express';
+import Container from "typedi";
+import { PaymentMethodImages } from '../repos/paymentmethodimages';
+
+export class PaymentMethodImagesRouter {
+    setupRouter(): Router {
+        let paymentMethodImages = Container.get(PaymentMethodImages);
+        let router = Router();
+        
+        router.get('/paymentmethodimages/', paymentMethodImages.getPaymentMethodImages);
+        
+        return router;
+    }
+}

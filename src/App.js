@@ -24,7 +24,7 @@ class App extends Component {
     render () {
         let content;
 
-        if (this.state.queryParams && this.state.queryParams.size > 0){
+        if (this.state.queryParams && this.state.queryParams.size > 0) {
             let email = this.state.queryParams.get("email");
             let guid = this.state.queryParams.get("guid");
 

@@ -17,17 +17,19 @@ import { InvoiceItem } from "../models/InvoiceItem";
 import { EventLogDb } from "../db/eventLogDb";
 import useAwsSecrets from "../hooks/useAwsSecrets";
 import { UtilityItems } from "../models/UtilityItems";
+import { Users } from "./users";
+import { PaymentMethodDataDTO } from "../models/PaymentMethodDataDTO";
 
 
 const config:Stripe.StripeConfig = {
     apiVersion: settings.stripe.apiVersion as Stripe.StripeConfig["apiVersion"],
     appInfo: { // For sample support and debugging, not required for production:
-      name: "stripe-samples/accept-a-payment",
-      url: "https://github.com/stripe-samples",
-      version: "0.0.2",
+        name: "stripe-samples/accept-a-payment",
+        url: "https://github.com/stripe-samples",
+        version: "0.0.2",
     },
     typescript: true,
-  };
+};
 let stripeKey = null;
 let stripe = null;
 const auth = Container.get(Authentication);
@@ -47,7 +49,6 @@ export class StripePayments {
     createPaymentIntent(req: Request, res: Response) {
         let total = this.getTotal(req.body);
         let paymentOptionsDb = Container.get(PaymentOptionsDb);
-        let stripeCustomer = Container.get(StripeCustomer);
         let invoicesDb = Container.get(InvoicesDb);
         let invoiceItemsDb = Container.get(InvoiceItemsDb);
 
@@ -62,12 +63,13 @@ export class StripePayments {
 
                 let stripeCustomerNumber: string = paymentOptions && paymentOptions.results && paymentOptions.results.length > 0
                     ? option.StripeCustomer
-                    : await stripeCustomer.createCustomer(userId);
+                    : await this.CreateCustomer(req);
 
                 const paymentIntent = await stripe.paymentIntents.create({
                     customer: stripeCustomerNumber,
                     amount: total * 100,
                     currency: 'usd',
+                    setup_future_usage: "off_session",
                     automatic_payment_methods: {
                         enabled: true,
                     }
@@ -104,9 +106,17 @@ export class StripePayments {
                     paymentMethods = await stripe.customers.listPaymentMethods(option.StripeCustomer);
                 }
 
+                if (!paymentMethods || !paymentMethods.data || paymentMethods.data.length == 0) {
+                    useSendResponse(res);
+                    return;
+                }
+
+                // convert raw paymentMethods.data into PaymentMethodData, then return that array
+                let data = this.ToPaymentMethodData(paymentMethods.data);
+
                 useSendResponse(
                     res,
-                    paymentMethods ? paymentMethods.data : {},
+                    data,
                     null
                 );
             });
@@ -259,7 +269,7 @@ export class StripePayments {
         });
     }
 
-    private getTotal(body: UtilityPurchase){
+    private getTotal(body: UtilityPurchase) {
         let total = 0;
         
         body.Items.forEach(item => {
@@ -267,5 +277,59 @@ export class StripePayments {
         });
     
         return total;
+    }
+
+    private async CreateCustomer(req: Request) {
+        let stripeCustomer = Container.get(StripeCustomer);
+        let users = Container.get(Users);
+        let user = await users.getOAuthUser(req);
+
+        return await stripeCustomer.createCustomer(user);
+    }
+
+    private ToPaymentMethodData(paymentMethods: Stripe.PaymentMethod[]) {
+        if (!paymentMethods || paymentMethods.length == 0) {
+            return;
+        }
+        let data: PaymentMethodDataDTO[] = [];
+
+        paymentMethods.forEach((payment, i) =>
+        {
+            let instance: PaymentMethodDataDTO = {
+                Id: i,
+                Provider: "Stripe",
+                Name: payment.billing_details.name,
+                Phone: payment.billing_details.phone,
+                Email: payment.billing_details.email,
+                Type: payment.type,
+                LinkEmail: undefined,
+                ExpDate: undefined,
+                Last4: undefined,
+                Brand: undefined,
+
+                Address: {
+                    Line1: payment.billing_details.address.line1,
+                    Line2: payment.billing_details.address.line2,
+                    City: payment.billing_details.address.city,
+                    State: payment.billing_details.address.state,
+                    Country: payment.billing_details.address.country,
+                    Zip: payment.billing_details.address.postal_code
+                }
+            };
+
+            if (instance.Type.toLocaleLowerCase() === "link" && payment.link) {
+                instance.LinkEmail = payment.link.email;
+            }
+
+            if (instance.Type.toLocaleLowerCase() === "card" && payment.card) {
+                instance.Last4 = payment.card.last4;
+                instance.Brand = payment.card.brand;
+                instance.ExpDate = payment.card.exp_month + "/" + payment.card.exp_year;
+            }
+
+            data.push(instance);
+        });
+
+        return data;
     }
 };
