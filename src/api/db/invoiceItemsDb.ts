@@ -12,20 +12,13 @@ export class InvoiceItemsDb {
         this.dbPool = injectedPool;
     }
 
-    getInvoiceItems(invoiceIds: number[], cbFunc: any) {
+    getInvoiceItems(invoiceIds: number[] | string, cbFunc: any) {
         let whereClause = "";
         let values = {};
 
         if (invoiceIds) {
-            let valueString = [];
-    
-            invoiceIds.forEach((id, index) => {
-                let key = `id${index}`;
-                values[key] = id;
-                valueString.push(`:${key}`);
-            });
-
-            whereClause = ` AND InvoiceId IN (${valueString.join(",")}) `; 
+            values['valueString'] = typeof invoiceIds === 'string' ? invoiceIds : invoiceIds.join(',');
+            whereClause = ` AND InvoiceId IN (:valueString) `; 
         }
 
         const query = `SELECT invoiceitem.Id as Id, InvoiceId, UtilitiesId, Price, Qty, utilities.Name as Name

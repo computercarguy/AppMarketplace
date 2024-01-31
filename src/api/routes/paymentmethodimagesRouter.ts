@@ -7,7 +7,7 @@ export class PaymentMethodImagesRouter {
         let paymentMethodImages = Container.get(PaymentMethodImages);
         let router = Router();
         
-        router.get('/paymentmethodimages/', paymentMethodImages.getPaymentMethodImages);
+        router.get('/paymentmethodimages/', (req, res) => paymentMethodImages.getPaymentMethodImages(req, res));
         
         return router;
     }

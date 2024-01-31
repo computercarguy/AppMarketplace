@@ -7,7 +7,7 @@ export class UtilitiesRouter {
         let utilities = Container.get(Utilities);
         let router = Router();
         
-        router.get('/utilities', utilities.getUtility);
+        router.get('/utilities', (req, res) => utilities.getUtility(req, res));
         
         return router;
     }

@@ -17,7 +17,11 @@ class StripeAccount extends Component {
         }
     }
 
-    UpdatePaymentMethod(me, paymentMethods, paymentMethodImages) {
+    UpdatePaymentMethod(paymentMethods, paymentMethodImages) {
+        if (paymentMethods.length === 0 || paymentMethodImages.length === 0) {
+            return;
+        }
+
         paymentMethods.forEach(element => {
             let providerImage = paymentMethodImages.find(image => image.Name.toLowerCase() === element.Provider.toLowerCase());
             if (providerImage) {
@@ -56,13 +60,8 @@ class StripeAccount extends Component {
             return res.json();
         })
         .then(function(resJson) {
-            let paymentMethods = resJson.message;
-            if (me.state.PaymentMethodImages && me.state.PaymentMethodImages.length > 0) {
-                me.UpdatePaymentMethod(me, paymentMethods, me.state.PaymentMethodImages);
-            }
-
-            me.setState({PaymentMethods: paymentMethods});
-    
+            me.UpdatePaymentMethod(resJson.message, me.state.PaymentMethodImages);
+            me.setState({PaymentMethods: resJson.message});
         })
         .catch(error => {
             alert(error)
@@ -82,12 +81,8 @@ class StripeAccount extends Component {
             return res.json();
         })
         .then(function(resJson) {
-            if (me.state.PaymentMethods && me.state.PaymentMethods.length > 0) {
-                me.UpdatePaymentMethod(me, me.state.PaymentMethods, resJson.message);
-            }
-
+            me.UpdatePaymentMethod(me.state.PaymentMethods, resJson.message);
             me.setState({PaymentMethodImages: resJson.message});
-    
         })
         .catch(error => {
             alert(error)
@@ -95,7 +90,12 @@ class StripeAccount extends Component {
     }
 
     CapitalizeFirstLetter(word) {
-        return word[0].toUpperCase() + word.slice(1).toLowerCase();
+        if (word) {
+            return word[0].toUpperCase() + word.slice(1).toLowerCase();
+        }
+        else {
+            return "";
+        }
     }
 
     componentDidMount() {
@@ -117,9 +117,9 @@ class StripeAccount extends Component {
                         autoHeight={true}
                         getRowId={(row) => row.Id}
                         columns={[
-                            { field: 'Provider', width: 150, height: 50, 
+                            { field: 'Provider', width: 75, 
                                 renderCell: (params) => {return (params && params.row.ProviderImage) ? 
-                                    <img src={params.row.ProviderImage} height={20} alt={params.row.Provider} /> : 
+                                    <img src={params.row.ProviderImage} height={25} alt={params.row.Provider} /> : 
                                     this.CapitalizeFirstLetter(params.row.Type)} }, 
                             { field: 'Type', width: 75,
                                 renderCell: (params) => { return (params && params.row.TypeImage) ? 

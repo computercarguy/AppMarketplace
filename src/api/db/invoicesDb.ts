@@ -12,14 +12,15 @@ export class InvoicesDb {
 
     getInvoices(userId: number, invoiceIds: number[], cbFunc: any) {
         const values = {userId: userId.toString()};
-        const whereClause = invoiceIds ? ` WHERE id IN ('${invoiceIds.join("','" + "'")}') ` : "";
+        const whereClause = invoiceIds ? ` AND id IN ('${invoiceIds.join("','" + "'")}') ` : "";
 
-        const query = `SELECT OAuthUserId, status.Name as Status, PurchasedDate, paymentMethod.Name as PaymentMethod, total
+        const query = `SELECT invoice.Id, invoicestatus.Name as Status, PurchasedDate, paymentMethod.Name as PaymentMethod, total
             FROM invoice 
-            LEFT JOIN invoicestatus on status.Id = invoice.StatusId
+            LEFT JOIN invoicestatus on invoicestatus.Id = invoice.StatusId
             LEFT JOIN paymentMethod on paymentMethod.Id = invoice.PaymentMethodId
+            WHERE invoice.StatusId in (2,5) 
             ${whereClause}
-            ORDER BY PurchasedDate ASC `; 
+            ORDER BY PurchasedDate DESC `; 
 
         this.dbPool.query(query, values, cbFunc);
     }

@@ -7,7 +7,8 @@ export class InvoiceRouter {
         let invoices = Container.get(Invoices);
         let router = Router();
         
-        router.get('/stripe/invoices', invoices.getInvoices);
+        router.get('/invoices', (req, res) => invoices.getInvoices(req, res));
+        router.get('/invoice/items/:ids', (req, res) => invoices.getInvoiceItems(req, res));
         
         return router;
     }

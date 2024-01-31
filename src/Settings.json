@@ -35,6 +35,10 @@
         },
         "paymentmethodimages": {
             "getPaymentMethodImages": "paymentmethodimages/"
+        },
+        "invoices": {
+            "getInvoices": "invoices",
+            "getInvoiceItems": "invoice/items/"
         }
     }
 }
