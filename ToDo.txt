@@ -2,13 +2,12 @@
 Password complexity
 Add "country" to OAuth user creation
  - Update CreateCustomer for Stripe 
-Disable the "Purchase" button after it's clicked
-Reenable "Purchase" button if it's not successful
 
 ** VNext
 Remove rows with "Cart" status, StatusId = 1, in Invoice table after 24 hrs
 Update Market API to check against whitelist
 Login retry timeouts
+Consistently use "export default" for function components
 Allow custom password complexity
 Test webhook for completed payments
  - Change updateInvoiceByPaymentIdentifier to set StatusId to 5, instead of 2
@@ -109,3 +108,6 @@ Fixed Stripe customer creation to include useful customer info
 Show Stripe account info and payment methods on new "Payment Accounts" page
 Show Stripe and Visa/MC/etc logos on Payment Accounts page in grid
 Show completed invoices on new "Invoices" page
+Disable the "Purchase" button after it's clicked
+Reenable "Purchase" button if it's not successful
+Reenable "Purchase" button if form isn't filled out correctly

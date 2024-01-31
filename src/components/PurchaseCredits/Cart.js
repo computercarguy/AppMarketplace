@@ -18,11 +18,12 @@ export default function Cart(params) {
         loader: "auto"
     };
     
-    async function SubmitPayment(stripe, elements, data) {
+    async function SubmitPayment(stripe, elements, data, enablePurchaseButton) {
         const {error: submitError} = await elements.submit();
 
         if (submitError) {
             console.log(submitError);
+            enablePurchaseButton();
             return;
         }
 
@@ -34,6 +35,7 @@ export default function Cart(params) {
         ).then(function(result) {
             if (!result) {
                 alert('Payment failed to process');
+                enablePurchaseButton();
             } 
             else if (result.error) {
                 if (result.error.payment_intent && result.error.payment_intent.status === "succeeded") {
@@ -41,6 +43,7 @@ export default function Cart(params) {
                 }
                 else {
                     alert('Card error: ' + result.error.message);
+                    enablePurchaseButton();
                 }
             }
             else {
@@ -49,6 +52,7 @@ export default function Cart(params) {
                 }
                 else {
                     alert('Payment failed');
+                    enablePurchaseButton();
                 }
             }
         });
@@ -97,7 +101,7 @@ export default function Cart(params) {
         });
     }
 
-    function HandleSubmit(e, stripe, elements) {
+    function HandleSubmit(e, stripe, elements, enablePurchaseButton) {
         e.preventDefault();
         const data = new FormData(e.target);
         
@@ -120,12 +124,12 @@ export default function Cart(params) {
             .then((res) => res.json())
             .then(async (data) => {
                 if (data && data.message) {
-                    SubmitPayment(stripe, elements, data);
+                    SubmitPayment(stripe, elements, data, enablePurchaseButton);
                 }
             });
         }
         else {
-            SubmitPayment(stripe, elements, data);
+            SubmitPayment(stripe, elements, data, enablePurchaseButton);
         }
     }
 
