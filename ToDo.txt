@@ -1,13 +1,14 @@
 ** ToDo
-Update NodeOAuth2 sql script
-Validate password complexity in NodeOAuth2
 
 ** VNext
+Move NodeOAuth2 to business Git account
+Move AppMarketplace to business Git account
 Remove rows with "Cart" status, StatusId = 1, in Invoice table after 24 hrs
 Update Market API to check against whitelist
 Login retry timeouts
 Consistently use "export default" for function components
 Allow custom password complexity
+ - Get complexity from AWS secrets
 Test webhook for completed payments
  - Change updateInvoiceByPaymentIdentifier to set StatusId to 5, instead of 2
 Move this ToDo list to online task management
@@ -116,3 +117,6 @@ Fix logout
 When logged in and resetting password, change "Go to Login Page" to "Go to Account Page"
 Add "country" to OAuth user creation
  - Update CreateCustomer for Stripe
+Validate password complexity in NodeOAuth2
+Update NodeOAuth2 sql script
+Update AppMarketplace sql script

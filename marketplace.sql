@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 19, 2024 at 10:28 PM
+-- Generation Time: Feb 01, 2024 at 10:27 PM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 5.6.32
 
@@ -111,6 +111,50 @@ INSERT INTO `paymentmethod` (`Id`, `Name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `paymentmethodimages`
+--
+
+CREATE TABLE `paymentmethodimages` (
+  `Id` int(11) NOT NULL,
+  `Name` text NOT NULL,
+  `Url` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `paymentmethodimages`
+--
+
+INSERT INTO `paymentmethodimages` (`Id`, `Name`, `Url`) VALUES
+(1, 'Visa', 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg'),
+(2, 'MasterCard', 'https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg'),
+(3, 'American Express', 'https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg'),
+(4, 'AmEx', 'https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg'),
+(5, 'PayPal', 'https://upload.wikimedia.org/wikipedia/commons/a/a8/Paypal_Servise.jpg'),
+(6, 'Stripe', 'https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg'),
+(7, 'Discover', 'https://upload.wikimedia.org/wikipedia/commons/5/57/Discover_Card_logo.svg'),
+(8, 'Square', 'https://upload.wikimedia.org/wikipedia/commons/3/3d/Square%2C_Inc._logo.svg'),
+(9, 'JCB', 'https://upload.wikimedia.org/wikipedia/commons/4/40/JCB_logo.svg'),
+(10, 'Diners', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Diners_Club_logo.svg'),
+(11, 'Diners Club', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Diners_Club_logo.svg'),
+(12, 'Diners Club International', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Diners_Club_logo.svg'),
+(13, 'Google Pay', 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Google_Pay_Acceptance_Mark.svg'),
+(14, 'G-Pay', 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Google_Pay_Acceptance_Mark.svg'),
+(15, 'G Pay', 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Google_Pay_Acceptance_Mark.svg'),
+(16, 'Apple Pay', 'https://upload.wikimedia.org/wikipedia/commons/1/13/Apple_Pay_Acceptance_Mark.svg'),
+(17, 'Cash App', 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Square_Cash_app_logo.svg'),
+(18, 'Cash App Pay', 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Square_Cash_app_logo.svg'),
+(19, 'Square Cash App', 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Square_Cash_app_logo.svg'),
+(20, 'Square Cash App Pay', 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Square_Cash_app_logo.svg'),
+(21, 'Skrill', 'https://upload.wikimedia.org/wikipedia/commons/3/36/Skrill_primary_logo_RGB.svg'),
+(22, 'Bitcoin', 'https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg'),
+(23, 'Amazon Pay', 'https://upload.wikimedia.org/wikipedia/commons/2/29/Amazon_Pay_logo.svg'),
+(24, 'Union Pay', 'https://upload.wikimedia.org/wikipedia/commons/1/1b/UnionPay_logo.svg'),
+(25, 'UnionPay', 'https://upload.wikimedia.org/wikipedia/commons/1/1b/UnionPay_logo.svg'),
+(26, 'DinaCard', 'https://upload.wikimedia.org/wikipedia/commons/6/66/%D0%94%D0%B8%D0%BD%D0%B0.png');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `paymentoptions`
 --
 
@@ -119,6 +163,10 @@ CREATE TABLE `paymentoptions` (
   `OAuthUserId` int(11) NOT NULL,
   `StripeCustomer` text COLLATE utf8_bin
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `paymentoptions`
+--
 
 -- --------------------------------------------------------
 
@@ -160,6 +208,10 @@ CREATE TABLE `utilitiescredits` (
   `QuantityPurchased` int(11) NOT NULL,
   `QuantityUsed` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `utilitiescredits`
+--
 
 -- --------------------------------------------------------
 
@@ -231,6 +283,12 @@ ALTER TABLE `paymentmethod`
   ADD KEY `Id` (`Id`);
 
 --
+-- Indexes for table `paymentmethodimages`
+--
+ALTER TABLE `paymentmethodimages`
+  ADD PRIMARY KEY (`Id`);
+
+--
 -- Indexes for table `paymentoptions`
 --
 ALTER TABLE `paymentoptions`
@@ -282,49 +340,55 @@ ALTER TABLE `eventlog`
 -- AUTO_INCREMENT for table `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=175;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `invoiceitem`
 --
 ALTER TABLE `invoiceitem`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `invoicestatus`
 --
 ALTER TABLE `invoicestatus`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `paymentmethod`
 --
 ALTER TABLE `paymentmethod`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT for table `paymentmethodimages`
+--
+ALTER TABLE `paymentmethodimages`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `utilities`
 --
 ALTER TABLE `utilities`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `utilitiescredits`
 --
 ALTER TABLE `utilitiescredits`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `utilitiescreditsused`
 --
 ALTER TABLE `utilitiescreditsused`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `utilitiesprice`
 --
 ALTER TABLE `utilitiesprice`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- Constraints for dumped tables
