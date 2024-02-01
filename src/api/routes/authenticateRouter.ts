@@ -22,6 +22,7 @@ export class AuthenticateRouter {
         router.post("/auth/register", (req, res) => authenticate.registerUser(req, res));
         router.get("/auth/validate", (req, res) => authenticate.validateUser(req, res));
         router.get("/auth/userid", (req, res) => authenticate.getUserId(req, res));
+        router.get("/auth/passwordcomplexity", (req, res) => authenticate.getPasswordComplexity(req, res));
         
         return router;
     }

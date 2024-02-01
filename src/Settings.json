@@ -13,7 +13,8 @@
             "login": "auth/login",
             "register": "auth/register",
             "validateUser": "auth/validate",
-            "getUserId": "auth/userid"
+            "getUserId": "auth/userid",
+            "getPasswordComplexity": "auth/passwordcomplexity"
         },
         "user": {
             "updateUser": "user/updateUser",
@@ -39,6 +40,7 @@
         "invoices": {
             "getInvoices": "invoices",
             "getInvoiceItems": "invoice/items/"
-        }
+        },
+        "countryCodes": "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/countries-codes/records?select=iso2_code%2C%20label_en&order_by=label_en%20asc&limit=100"
     }
 }

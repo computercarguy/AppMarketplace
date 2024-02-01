@@ -17,7 +17,8 @@ class App extends Component {
         this.state = {
             accountPage: "Utilities",
             SetActivePage: props.setActivePage,
-            user: null
+            user: null,
+            wasLoggedIn: false
         };
     }
 
@@ -54,23 +55,34 @@ class App extends Component {
 
     LoginOrUser = () => {
         if (this.state.user) {
+            if (!this.state.wasLoggedIn) {
+                this.setState({wasLoggedIn:true});
+            }
+            
             return <Fragment>
                 <div class="dropdown">
                     <button class="dropbtn">{this.state.user.Username} &#9660;</button>
                     <div class="dropdown-content">
-                    <button type="button" className="hyperlink" onClick={() => this.SetAccountPage("AccountPage")}>Account</button>
-                    <br/>
-                    <button type="button" className="hyperlink" onClick={() => this.SetAccountPage("StripeAccount")}>Payment Account</button>
-                    <br/>
-                    <button type="button" className="hyperlink" onClick={() => this.SetAccountPage("Invoices")}>Invoices</button>
-                    <br/>
-                    <button type="button" class="hyperlink" onClick={this.Logout}>Logout</button>
+                        <button type="button" className="hyperlink" onClick={() => this.SetAccountPage("AccountPage")}>Account</button>
+                        <br/>
+                        <button type="button" className="hyperlink" onClick={() => this.SetAccountPage("StripeAccount")}>Payment Account</button>
+                        <br/>
+                        <button type="button" className="hyperlink" onClick={() => this.SetAccountPage("Invoices")}>Invoices</button>
+                        <br/>
+                        <button type="button" class="hyperlink" onClick={this.Logout}>Logout</button>
                     </div>
                 </div> 
             </Fragment>;
         }
         else {
-            return <button type="button" className="hyperlink" onClick={this.Logout} >Login</button>;
+            if (this.state.wasLoggedIn) {
+                this.setState({wasLoggedIn:false});
+                this.Logout();
+                return;
+            }
+            else {
+                return <button type="button" className="hyperlink" onClick={this.Logout} >Login</button>;
+            }
         }
     }
 

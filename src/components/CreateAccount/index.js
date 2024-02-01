@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import '../../App.css';
 import settings from '../../Settings.json';
+import useCheckPasswords from '../../hooks/useCheckPasswords';
+import PasswordValidation from './PasswordValidation';
 
 const requiredFields = [
     {Name: "firstName", Value:"First Name"}, 
@@ -10,11 +12,19 @@ const requiredFields = [
     {Name: "address1", Value:"Address 1"}, 
     {Name: "city", Value:"City"}, 
     {Name: "state", Value:"State"}, 
-    {Name: "zipCode", Value:"Zip"}
+    {Name: "zipcode", Value:"Zip/Postal Code"},
+    {Name: "country", Value:"Country"}
 ];
 const token = sessionStorage.getItem('token');
+const passwordOptionsDefault = {
+    minLength: 8,
+    hasUpperCase: true,
+    hasLowerCase: true,
+    hasNumbers: true,
+    hasNonalphas: true
+};
 
-class CreateAccount extends Component {
+export default class CreateAccount extends Component {
     constructor(props) {
         super(props);
     
@@ -22,10 +32,51 @@ class CreateAccount extends Component {
             SetActivePage: props.setActivePage,
             Business: true,
             PageType: Number(props.pageType),
-            PasswordsMatch: true,
+            PasswordsValidation: {},
             FormMessage: "",
-            Logout: props.logout
+            Logout: props.logout,
+            PasswordOptions: passwordOptionsDefault,
+            CountryCodes: [],
+            SelectedCountry: "US"
         };
+    }
+
+    GetPasswordComplexity() {
+        let me = this;
+        fetch(process.env.REACT_APP_apiUrl + settings.urls.auth.getPasswordComplexity, { 
+            method: 'get', 
+            headers: new Headers({
+                'Content-Type': 'application/x-www-form-urlencoded'
+            })
+        }).then(function(res) {
+            return res.json();
+        })
+        .then(function(resJson) {
+            if (resJson.message) {
+                me.setState({PasswordOptions: resJson.message});
+            }
+        });
+    }
+
+    GetCountryCodes(me, countryCodes) {
+        fetch(settings.urls.countryCodes + "&offset=" + countryCodes.length, { 
+            method: 'get', 
+            headers: new Headers({
+                'Content-Type': 'application/x-www-form-urlencoded'
+            })
+        }).then(function(res) {
+            return res.json();
+        })
+        .then(function(resJson) {
+            if (resJson && resJson.results) {
+                if (resJson.results.length < 100) {
+                    me.setState({CountryCodes: countryCodes.concat(resJson.results)});
+                }
+                else {
+                   me.GetCountryCodes(me, countryCodes.concat(resJson.results)); 
+                }
+            }
+        });
     }
 
     UpdateBusinessNameRow = () => {
@@ -37,7 +88,8 @@ class CreateAccount extends Component {
         const password = document.getElementById("password").value;
         const password2 = document.getElementById("password2").value;
 
-        this.setState({PasswordsMatch: password === password2});
+        let validPasswords = useCheckPasswords(password, password2, this.state.PasswordOptions);
+        this.setState({PasswordsValidation: validPasswords});
     }
 
     ValidateForm = (event) => {
@@ -50,8 +102,10 @@ class CreateAccount extends Component {
             formProps["businessName"] = "";
         }
         if (this.state.PageType === 0) {
-            if (formProps["password"] !== formProps["password2"]) {
-                this.setState({PasswordsMatch: false});
+            let validPasswords = useCheckPasswords(formProps["password"], formProps["password2"], this.state.PasswordOptions);
+
+            if (!validPasswords.valid) {
+                this.setState({PasswordsValidation: validPasswords});
                 return;
             }
 
@@ -87,7 +141,7 @@ class CreateAccount extends Component {
             return res.json();
         })
         .then(function(resJson) {
-            if (resJson.message !== "") {
+            if (resJson.message.toLowerCase() === "success") {
                 if (me.state.PageType === 0) {
                     me.state.SetActivePage("Login");
                 }
@@ -113,6 +167,8 @@ class CreateAccount extends Component {
                     <div className='leftColumn'><label htmlFor="password2" >Re-type Password*:</label></div>
                     <div className='rightColumn'><input type="password" onKeyUp={this.CheckPasswords} id="password2" name="password2" required /></div>
                 </div>
+
+                <PasswordValidation PasswordsValidation={this.state.PasswordsValidation} MinLength={this.state.PasswordOptions.minLength}/>
             </Fragment>;
         }
         else {
@@ -155,6 +211,9 @@ class CreateAccount extends Component {
                         document.getElementById("business").checked = data[key];
                         document.getElementById("personal").checked = !data[key];
                     }
+                    else if (name === "country") {
+                        me.setState({SelectedCountry:data[key]});
+                    }
                     else {
                         let input = document.getElementById(name);
 
@@ -193,10 +252,20 @@ class CreateAccount extends Component {
         }
     }
 
+    HandleCountryChange = event => {
+        this.setState({ SelectedCountry: event.target.value });
+      };
+
     componentDidMount() {
         if (this.state.PageType === 1) {
             this.GetUser();
         }
+
+        if (this.state.CountryCodes.length === 0) {
+            this.GetCountryCodes(this, []);
+        }
+
+        this.GetPasswordComplexity();
     }
 
     render() {
@@ -224,10 +293,6 @@ class CreateAccount extends Component {
                 </div>
 
                 {this.PasswordOrPage()}
-
-                <div className={'row' + (!this.state.PasswordsMatch ? " visible redWarning" : " hidden")}>
-                    Passwords must match!
-                </div>
 
                 <div className='row'>
                     <div className='leftColumn'><input type="radio" name="business" id="business" value="Business" checked={this.state.Business} onChange={this.UpdateBusinessNameRow}/> <label htmlFor="business" >Business</label></div>
@@ -265,8 +330,22 @@ class CreateAccount extends Component {
                 </div>
 
                 <div className='row'>
-                    <div className='leftColumn'><label htmlFor="zipcode" >Zip*:</label></div>
+                    <div className='leftColumn'><label htmlFor="zipcode" >Zip/Postal Code*:</label></div>
                     <div className='rightColumn'><input type="text" id="zipcode" name="zipcode" required /></div>
+                </div>
+
+                <div className='row'>
+                    <div className='leftColumn'><label htmlFor="country" >Country*:</label></div>
+                    <div className='rightColumn'>
+                        <select id="country" name="country" value={this.state.SelectedCountry} onChange={this.HandleCountryChange}>
+                            <option value="">Select the country</option>
+                            {this.state.CountryCodes.map((country) => (
+                                <option key={country.iso2_code} value={country.iso2_code}>
+                                {country.label_en}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
                 
                 <br />
@@ -282,5 +361,3 @@ class CreateAccount extends Component {
         );
     }
 }
-
-export default CreateAccount;

@@ -28,8 +28,8 @@ export class Authentication {
 
     async registerUser(req: Request, cbFunc: Function) {
         let url = await this.getLoginUrl() + settings.urls.auth.register;
-
-        useFetch(url, "post", null, req.body, cbFunc);
+        
+        useFetch(url, "post", null, JSON.stringify(req.body), cbFunc, "application/json; charset=utf-8");
     }
 
     async validateUser(req: Request, cbFunc: Function) {
@@ -47,6 +47,11 @@ export class Authentication {
         req.body["client_secret"] = "1234";
 
         useFetch(url, "post", null, new URLSearchParams(req.body).toString(), cbFunc, "application/x-www-form-urlencoded");
+    }
+
+    async getPasswordComplexity(req: Request, cbFunc: Function) {
+        let url = await this.getLoginUrl() + settings.urls.auth.getPasswordComplexity;
+        useFetch(url, "get", null, null, cbFunc, "application/x-www-form-urlencoded");
     }
 
     private async getLoginUrl() {

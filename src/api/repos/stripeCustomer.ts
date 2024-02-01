@@ -38,7 +38,7 @@ export class StripeCustomer {
                 city: user.City, 
                 state: user.State,
                 postal_code: user.Zipcode,
-                country: "US"
+                country: user.Country
             }
         });
 

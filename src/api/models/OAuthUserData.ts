@@ -11,4 +11,5 @@ export interface OAuthUserData {
     State: String,
     Email: String,
     Zipcode: String,
+    Country: String
 }

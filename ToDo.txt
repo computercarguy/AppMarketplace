@@ -1,7 +1,6 @@
 ** ToDo
-Password complexity
-Add "country" to OAuth user creation
- - Update CreateCustomer for Stripe 
+Update NodeOAuth2 sql script
+Validate password complexity in NodeOAuth2
 
 ** VNext
 Remove rows with "Cart" status, StatusId = 1, in Invoice table after 24 hrs
@@ -111,3 +110,9 @@ Show completed invoices on new "Invoices" page
 Disable the "Purchase" button after it's clicked
 Reenable "Purchase" button if it's not successful
 Reenable "Purchase" button if form isn't filled out correctly
+Password complexity
+Get password complexity from NodeOAuth2 API
+Fix logout
+When logged in and resetting password, change "Go to Login Page" to "Go to Account Page"
+Add "country" to OAuth user creation
+ - Update CreateCustomer for Stripe

@@ -57,4 +57,14 @@ export class Authenticate {
             );
         });
     }
+
+    getPasswordComplexity(req: Request, res: Response) {
+        auth.getPasswordComplexity(req, (passwordcomplexity: ApiResponse) => {
+            useSendResponse(
+                res,
+                passwordcomplexity.message,
+                null
+            );
+        });
+    }
 }

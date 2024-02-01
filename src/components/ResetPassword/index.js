@@ -1,6 +1,17 @@
 import React, { Component } from 'react';
 import '../../App.css';
 import settings from '../../Settings.json';
+import useCheckPasswords from '../../hooks/useCheckPasswords';
+import PasswordValidation from '../CreateAccount/PasswordValidation';
+
+const token = sessionStorage.getItem('token');
+const passwordOptionsDefault = {
+    minLength: 8,
+    hasUpperCase: true,
+    hasLowerCase: true,
+    hasNumbers: true,
+    hasNonalphas: true
+};
 
 class ResetPassword extends Component {
     constructor(props) {
@@ -10,16 +21,35 @@ class ResetPassword extends Component {
             SetActivePage: props.setActivePage,
             email: props.email,
             guid: props.guid,
-            PasswordsMatch: true,
-            FormMessage: ""
+            PasswordsValidation: true,
+            FormMessage: "",
+            PasswordOptions: passwordOptionsDefault
         };
     }
 
+    GetPasswordComplexity() {
+        let me = this;
+        fetch(process.env.REACT_APP_apiUrl + settings.urls.auth.getPasswordComplexity, { 
+            method: 'get', 
+            headers: new Headers({
+                'Content-Type': 'application/x-www-form-urlencoded'
+            })
+        }).then(function(res) {
+            return res.json();
+        })
+        .then(function(resJson) {
+            if (resJson.message) {
+                me.setState({PasswordOptions: resJson.message});
+            }
+        });
+    }
+    
     CheckPasswords = () => {
         const password = document.getElementById("password").value;
         const password2 = document.getElementById("password2").value;
+        let validPasswords = useCheckPasswords(password, password2, this.state.PasswordOptions);
 
-        this.setState({PasswordsMatch: password === password2});
+        this.setState({PasswordsValidation: validPasswords});
     }
 
     PasswordOrGuid = () => {
@@ -32,7 +62,7 @@ class ResetPassword extends Component {
         else {
             return <div className='row'>
                 <div className='leftColumn'><label htmlFor="current" >Current Password:</label></div>
-                <div className='rightColumn'><input type="text" id="current" name="current" /></div>
+                <div className='rightColumn'><input type="password" id="current" name="current" /></div>
             </div>;
         }
     }
@@ -42,8 +72,10 @@ class ResetPassword extends Component {
         const formData = new FormData(event.target);
         const formProps = Object.fromEntries(formData);
 
-        if (formProps["password"] !== formProps["password2"]) {
-            this.setState({PasswordsMatch: false});
+        let validPasswords = useCheckPasswords(formProps["password"], formProps["password2"], this.state.PasswordOptions);
+
+        if (!validPasswords.valid) {
+            this.setState({PasswordsValidation: validPasswords});
             return;
         }
 
@@ -84,6 +116,10 @@ class ResetPassword extends Component {
         });
     }
 
+    componentDidMount() {
+        this.GetPasswordComplexity();
+    }
+
     render() {
         return (
             <form className="column" onSubmit={this.ValidateForm}>
@@ -105,14 +141,17 @@ class ResetPassword extends Component {
                     <div className='rightColumn'><input type="password" onKeyUp={this.CheckPasswords} id="password2" name="password2" required /></div>
                 </div>
 
-                <div className={'row' + (!this.state.PasswordsMatch ? " visible redWarning" : " hidden")}>
-                    Passwords must match!
-                </div>
+                <PasswordValidation PasswordsValidation={this.state.PasswordsValidation} MinLength={this.state.PasswordOptions.minLength}/>
 
                 <br />
                 <button type="submit">Reset Password</button>
                 <br />
-                <button type="button" className="hyperlink" onClick={() => this.state.SetActivePage("Login")}>Go to Login page</button>
+                {token &&
+                    <button type="button" className="hyperlink" onClick={() => this.state.SetActivePage("AccountPage")}>Go to Account page</button>
+                }
+                {!token &&
+                    <button type="button" className="hyperlink" onClick={() => this.state.SetActivePage("Login")}>Go to Login page</button>
+                }
             </form>
         );
     }
