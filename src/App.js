@@ -21,6 +21,16 @@ class App extends Component {
         this.setState({ activePage: title, queryParams: null });
     }
 
+    componentDidMount() {
+        if (this.state.queryParams) {
+            let page = this.state.queryParams.get("page");
+
+            if (page && this.state.activePage !== page) {
+                this.SetActivePage(this.state.queryParams.get("page"));
+            }
+        }
+    }
+
     render () {
         let content;
 

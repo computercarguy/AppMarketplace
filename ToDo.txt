@@ -1,6 +1,7 @@
 ** ToDo
 
 ** VNext
+Add "public" one time use "key" for transferring user creds/login to another app
 Move NodeOAuth2 to business Git account
 Move AppMarketplace to business Git account
 Remove rows with "Cart" status, StatusId = 1, in Invoice table after 24 hrs
