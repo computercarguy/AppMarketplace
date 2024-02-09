@@ -1,6 +1,6 @@
 const { SecretsManagerClient, GetSecretValueCommand } = require("@aws-sdk/client-secrets-manager");  
 
-const secretName = process.env.secretName ? process.env.secretName : "MarketPlace";
+const secretName = process.env.secretName;
 const client = new SecretsManagerClient({region: "us-west-2"});
 
 async function useAwsSecrets (cbfunc: any) {

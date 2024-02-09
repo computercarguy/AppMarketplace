@@ -83,7 +83,55 @@
         }
       }
     },
-    "/stripe/invoices": {
+    "/auth/passwordcomplexity": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/invoices": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/invoice/items/{ids}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/paymentmethodimages/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/stripe/key": {
       "get": {
         "description": "",
         "responses": {
@@ -224,7 +272,7 @@
       }
     },
     "/credits/update": {
-      "get": {
+      "post": {
         "description": "",
         "responses": {
           "default": {
