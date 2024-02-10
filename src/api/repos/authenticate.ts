@@ -10,11 +10,19 @@ const auth = Container.get(Authentication);
 export class Authenticate {
     login(req: Request, res: Response) {
         auth.login(req, (response) => {
-            useSendResponse(
-                res,
-                response,
-                null
-            );
+            if (typeof response === "object") {
+                useSendResponse(
+                    res,
+                    response,
+                    null
+                );
+            } else {
+                useSendResponse(
+                    res,
+                    null,
+                    null
+                );
+            }
         });
     }
 
