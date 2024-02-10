@@ -24,7 +24,7 @@
             "doPasswordReset": "user/doPasswordReset" ,
             "forgotUsername": "user/forgotUsername" ,
             "getUser": "user/",
-            "logout" : "logout/"
+            "logout" : "user/logout"
         },
         "credits": {
             "getCredits": "credits",
