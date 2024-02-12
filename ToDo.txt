@@ -25,7 +25,7 @@ Allow coupons/sales
 Build user, app, and payment "admin" app
  - Allow other devs access to add, update, and maintain their apps and payment info
 Add multi-factor authentication through text message (MessageBird API?)
-Log errors to DB (replace console.log)
+Log errors to DB (replace console.log and "throw error")
  - Market API
  - OAuth2 API
  - Client

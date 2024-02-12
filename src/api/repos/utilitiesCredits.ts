@@ -14,13 +14,20 @@ let auth = Container.get(Authentication);
 @Service()
 export class UtilitiesCredits {
     getCredits(req: Request, res: Response) {
+        let utilitiesGuid: string = req.query.utilitiesGuid.toString();
+
+        if (!utilitiesGuid) {
+            useSendResponse(res);
+            return;
+        }
+
         auth.getUserId(req, (userId: number) => {
             if (!userId) {
                 useSendResponse(res);
                 return;
             }
-
-            let data: UserData = {OAuthUserId: userId, UtilitiesId: null, UtilitiesGuid: req.body.utilitiesGuid ?? null};
+            
+            let data: UserData = {OAuthUserId: userId, UtilitiesId: null, UtilitiesGuid: utilitiesGuid};
 
             utilitiesCreditsDb.getUtilitiesCredits(data, (response: ApiResponse) => 
                 useSendResponse(
