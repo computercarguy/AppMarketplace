@@ -21,7 +21,7 @@
     "mysql2": "^3.6.1",
     "react": "^17.0.0 || ^18.0.0",
     "react-dom": "^17.0.0 || ^18.0.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "reflect-metadata": "^0.1.13",
     "stripe": "^14.2.0",
     "styled-components": "^5.3.11",
