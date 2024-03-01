@@ -29,6 +29,7 @@
     "swagger-ui-express": "^5.0.0",
     "typedi": "^0.10.0",
     "web-vitals": "^3.5.2",
+    "react-scripts": "^5.0.1",
     "webpack-dev-server": "^5.0.2"
   },
   "scripts": {
@@ -62,7 +63,6 @@
     "@types/node": "^20.8.2",
     "@types/swagger-ui-express": "^4.1.6",
     "nodemon": "^3.0.1",
-    "react-scripts": "^5.0.1",
     "swagger-autogen": "^2.23.7",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
