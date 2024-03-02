@@ -4,12 +4,13 @@ phases:
   pre_build:
     commands:
       - echo Installing source NPM dependencies...
-      - npm install --omit=dev
+      - npm install -g typescript
+      - npm install --production
   build:
     commands:
       - echo Build started on `date`
-      - npm start
-      - node appmarketplace/src/api/server.ts
+      - npm run build
+      - npm run buildapi
   post_build:
     commands:
       - echo Build completed on `date`

@@ -2,6 +2,7 @@
   "name": "authenticationeg",
   "version": "0.1.0",
   "private": true,
+  "main": "src/api/server.ts",
   "ts-node": {
     "esm": true
   },
@@ -35,6 +36,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "buildapi": "tsc",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
