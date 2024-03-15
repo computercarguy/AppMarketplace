@@ -1,6 +1,6 @@
 import { Request } from "express-serve-static-core";
 
-function useGetBearerToken(req: Request) {
+export default function useGetBearerToken(req: Request) {
     if (!req.headers.authorization) {
         return null;
     }
@@ -13,5 +13,3 @@ function useGetBearerToken(req: Request) {
 
     return null;
 }
-
-export default useGetBearerToken;

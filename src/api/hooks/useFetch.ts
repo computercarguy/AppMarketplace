@@ -1,4 +1,4 @@
-async function useFetch(url: string, method: string, authToken: string | null, body: string, cbFunc: Function, contentType: string = null) {
+export default async function useFetch(url: string, method: string, authToken: string | null, body: string, cbFunc: Function, contentType: string = null) {
     let headerObject = {};
 
     if (authToken) {
@@ -44,5 +44,3 @@ async function useFetch(url: string, method: string, authToken: string | null, b
         return response;
     }
 }
-
-export default useFetch;
