@@ -4,9 +4,7 @@ phases:
   pre_build:
     commands:
       - echo Installing source NPM dependencies...
-      - npm install -g typescript
       - npm install --omit=dev --force
-      - npm install node ts-node --force
   build:
     commands:
       - echo Build started on `date`
