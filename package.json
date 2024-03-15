@@ -4,7 +4,10 @@
   "private": true,
   "main": "src/api/server.ts",
   "ts-node": {
-    "esm": true
+    "esm": true,
+    "compilerOptions": {
+        "module": "NodeNext"
+    }
   },
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.521.0",
@@ -72,7 +75,7 @@
     "typescript": "^5.2.2"
   },
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "NodeNext",
     "moduleResolution": "Node"
   }
 }
