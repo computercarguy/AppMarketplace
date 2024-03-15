@@ -1,4 +1,4 @@
-const { SecretsManagerClient, GetSecretValueCommand } = require("@aws-sdk/client-secrets-manager");  
+import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";  
 
 const secretName = process.env.secretName;
 const client = new SecretsManagerClient({region: "us-west-2"});

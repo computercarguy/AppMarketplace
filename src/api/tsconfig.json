@@ -4,11 +4,11 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "strictPropertyInitialization": false,
-        "module": "NodeNext"
+        "module": "commonjs"
     },
     "ts-node": {
         "compilerOptions": {
-          "module": "NodeNext"
+          "module": "commonjs"
         }
     }
 }
