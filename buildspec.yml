@@ -6,6 +6,7 @@ phases:
       - echo Installing source NPM dependencies...
       - npm install -g typescript
       - npm install --omit=dev
+      - npm install node ts-node
   build:
     commands:
       - echo Build started on `date`
