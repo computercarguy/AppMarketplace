@@ -1,8 +1,8 @@
 require('./config/env');
 
 import "reflect-metadata";
-import * as express from "express";
-import * as cors from 'cors';
+import express from "express";
+import cors from 'cors';
 import { UtilitiesRouter } from './routes/utilitiesRouter';
 import { UtilitiesCreditsRouter } from "./routes/utilitiesCreditsRouter";
 import { StripeRouter } from "./routes/stripeRouter";
