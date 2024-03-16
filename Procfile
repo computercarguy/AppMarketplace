@@ -1,4 +1,4 @@
-release: npm install -g ts-node typescript
-release2: npm install -g react-scripts
+#release: npm install -g ts-node typescript
+#release2: npm install -g react-scripts
 web: npm run startNode
-web2: npm run startReact
+#web2: npm run startReact
