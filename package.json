@@ -7,7 +7,7 @@
   "ts-node": {
     "esm": true,
     "compilerOptions": {
-        "module": "commonjs"
+        "module": "NodeNext"
     }
   },
   "dependencies": {
@@ -76,7 +76,7 @@
     "swagger-autogen": "^2.23.7"
   },
   "compilerOptions": {
-    "module": "commonjs",
-    "moduleResolution": "commonjs"
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
   }
 }
