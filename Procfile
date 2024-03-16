@@ -1,2 +1,2 @@
-web: npm run startReact
-web2: npm run startNode
+web: npm run startNode
+web2: npm run startReact

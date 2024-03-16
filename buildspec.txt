@@ -4,6 +4,7 @@ phases:
   pre_build:
     commands:
       - echo Installing source NPM dependencies...
+      - npm install -g ts-node typescript
       - yarn install
   build:
     commands:
