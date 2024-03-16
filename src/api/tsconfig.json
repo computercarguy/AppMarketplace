@@ -6,10 +6,5 @@
         "strictPropertyInitialization": false,
         "module": "NodeNext",
         "moduleResolution": "NodeNext"
-    },
-    "ts-node": {
-        "compilerOptions": {
-          "module": "NodeNext"
-        }
     }
 }

@@ -3,12 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "main": "src/api/server.ts",
-  "target": "express",
   "ts-node": {
-    "esm": true,
-    "compilerOptions": {
-        "module": "NodeNext"
-    }
+    "esm": true
   },
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.521.0",
