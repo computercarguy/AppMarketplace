@@ -93,6 +93,16 @@
         }
       }
     },
+    "/health": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/invoices": {
       "get": {
         "description": "",
