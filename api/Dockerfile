@@ -1,21 +1,32 @@
 # syntax=docker/dockerfile:1
 
-FROM node:latest
-
-ENV NODE_ENV production
+FROM node:21-alpine as development
 
 WORKDIR /usr/src/app
-RUN npm install -g ts-node typescript
 
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    --mount=type=cache,target=/root/.npm \
-    npm ci --omit=dev
+COPY package*.json .
 
-USER node
+RUN npm install
 
 COPY . .
 
+RUN npm run build
+
+
+FROM node:21-alpine
+
+ENV NODE_ENV=production
+
+WORKDIR /usr/src/app
+
+COPY package*.json .
+
+RUN npm ci --omit=dev
+
+COPY --from=development /usr/src/app/dist ./
+
+USER node
+
 EXPOSE 3002
 
-CMD ts-node server.ts
+CMD node server.js
