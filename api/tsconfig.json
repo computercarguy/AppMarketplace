@@ -1,5 +1,8 @@
 {
     "compilerOptions": {
+        "target": "ESNext",
+        "rootDir": "./src",
+        "outDir": "./dist",
         "resolveJsonModule": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
