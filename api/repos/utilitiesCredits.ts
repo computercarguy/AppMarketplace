@@ -6,7 +6,7 @@ import { Authentication } from "./authentication";
 import { UserData } from "../models/UserData";
 import { Container, Service } from "typedi";
 import { ApiResponse } from "../models/ApiResponse";
-import * as settings from '../../Settings.json';
+import * as settings from '../Settings.json';
 
 let utilitiesCreditsDb = Container.get(UtilitiesCreditsDb);
 let auth = Container.get(Authentication);

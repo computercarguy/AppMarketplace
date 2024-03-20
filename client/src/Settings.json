@@ -1,0 +1,46 @@
+{
+    "errorMessage": "Something went wrong.",
+    "stripe": {
+        "key": "stripe/key",
+        "createPaymentIntent": "stripe/createPaymentIntent",
+        "paymentProcessed": "stripe/paymentProcessed",
+        "paymentMethods": "stripe/paymentMethods",
+        "updatePaymentIntent": "stripe/updatePaymentIntent",
+        "apiVersion": "2023-10-16"
+    },
+    "urls": {
+        "auth": {
+            "login": "auth/login",
+            "register": "auth/register",
+            "validateUser": "auth/validate",
+            "getUserId": "auth/userid",
+            "getPasswordComplexity": "auth/passwordcomplexity"
+        },
+        "user": {
+            "updateUser": "user/updateUser",
+            "updatePassword": "user/updatePassword",
+            "disableUser": "user/disable" ,
+            "createPasswordReset": "user/createPasswordReset" ,
+            "doPasswordReset": "user/doPasswordReset" ,
+            "forgotUsername": "user/forgotUsername" ,
+            "getUser": "user/",
+            "logout" : "user/logout"
+        },
+        "credits": {
+            "getCredits": "credits",
+            "updateCredits": "credits/update"
+        },
+        "utilities": {
+            "getUtilitites": "utilities",
+            "update": "utilities/update"
+        },
+        "paymentmethodimages": {
+            "getPaymentMethodImages": "paymentmethodimages/"
+        },
+        "invoices": {
+            "getInvoices": "invoices",
+            "getInvoiceItems": "invoice/items/"
+        },
+        "countryCodes": "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/countries-codes/records?select=iso2_code%2C%20label_en&order_by=label_en%20asc&limit=100"
+    }
+}

@@ -3,7 +3,7 @@ import { Service } from "typedi";
 import useSendResponse from "../hooks/useSendResponse";
 import { ApiResponse } from "../models/ApiResponse";
 import useGetBearerToken from "../hooks/useGetBearerToken";
-import * as settings from '../../Settings.json';
+import * as settings from '../Settings.json';
 import useFetch from "../hooks/useFetch";
 import useAwsSecrets from "../hooks/useAwsSecrets";
 

@@ -3,7 +3,7 @@ import { Container, Service } from "typedi";
 import useSendResponse from "../hooks/useSendResponse";
 import { Authentication } from "./authentication";
 import { ApiResponse } from "../models/ApiResponse";
-import * as settings from '../../Settings.json';
+import * as settings from '../Settings.json';
 import { InvoicesDb } from "../db/invoicesDb";
 import { InvoiceItemsDb } from "../db/invoiceItemsDb";
 

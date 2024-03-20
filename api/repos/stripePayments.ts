@@ -6,7 +6,7 @@ import { UtilityPurchase } from "../models/UtilityPuchase";
 import { PaymentOptionsDb } from "../db/paymentOptionsDb";
 import { Authentication } from "./authentication";
 import { PaymentOptions } from "../models/PaymentOptions";
-import * as settings from '../../Settings.json';
+import * as settings from '../Settings.json';
 import { StripeCustomer } from "./stripeCustomer";
 import { ApiResponse } from "../models/ApiResponse";
 import { InvoicesDb } from "../db/invoicesDb";

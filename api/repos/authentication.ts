@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import * as settings from '../../Settings.json';
+import * as settings from '../Settings.json';
 import useFetch from '../hooks/useFetch';
 import { ApiResponse } from '../models/ApiResponse';
 import useGetBearerToken from '../hooks/useGetBearerToken';
