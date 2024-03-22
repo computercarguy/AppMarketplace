@@ -1,8 +1,8 @@
 {
-  "name": "authenticationeg",
+  "name": "appmarketplace",
   "version": "0.1.0",
   "private": true,
-  "main": "src/api/server.ts",
+  "main": "src/index.js",
   "ts-node": {
     "esm": true
   },
