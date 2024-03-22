@@ -29,7 +29,7 @@ class ResetPassword extends Component {
 
     GetPasswordComplexity() {
         let me = this;
-        fetch(process.env.REACT_APP_apiUrl + settings.urls.auth.getPasswordComplexity, { 
+        fetch(settings.urls.auth.getPasswordComplexity, { 
             method: 'get', 
             headers: new Headers({
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -88,7 +88,7 @@ class ResetPassword extends Component {
     }
 
     SubmitForm = (formProps) => {
-        const url = process.env.REACT_APP_apiUrl + (this.state.guid && this.state.guid.trim() !== "" ? settings.urls.user.doPasswordReset : settings.urls.user.updatePassword);
+        const url = (this.state.guid && this.state.guid.trim() !== "" ? settings.urls.user.doPasswordReset : settings.urls.user.updatePassword);
         const me = this;
         const token = sessionStorage.getItem('token');
 

@@ -27,7 +27,7 @@ class ForgotPassword extends Component {
     }
 
     SubmitForm = (formProps) => {
-        const url = process.env.REACT_APP_apiUrl + settings.urls.user.createPasswordReset;
+        const url = settings.urls.user.createPasswordReset;
 
         useLoginFetch(url, formProps, "There was a problem sending the email.", this.state.SetActivePage);
     }

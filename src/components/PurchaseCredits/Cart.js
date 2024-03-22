@@ -10,7 +10,7 @@ export default function Cart(params) {
     const [paymentIntentId, setPaymentIntentId] = useState("");
     const [ranUseEffect, setRanUseEffect] = useState(false);
     const token = sessionStorage.getItem('token');
-    const checkoutUrl = process.env.REACT_APP_apiUrl + settings.stripe.paymentProcess;
+    const checkoutUrl = settings.stripe.paymentProcess;
 
     const options = {
         clientSecret: clientSecret,
@@ -59,7 +59,7 @@ export default function Cart(params) {
     }
 
     function SubmitItems(data, intentId) {
-        let url = process.env.REACT_APP_apiUrl + settings.stripe.paymentProcessed;
+        let url = settings.stripe.paymentProcessed;
         let amount = params.calculateTotal();
 
         fetch(url, {
@@ -108,7 +108,7 @@ export default function Cart(params) {
         let amount = params.calculateTotal();
 
         if (amount !== params.total) {
-            let url = process.env.REACT_APP_apiUrl + settings.stripe.updatePaymentIntent
+            let url = settings.stripe.updatePaymentIntent
             fetch(url, {
                 method: "PUT",
                 headers: { 
@@ -138,7 +138,7 @@ export default function Cart(params) {
             setRanUseEffect(true); // prevent creating multiple payment intents
 
             // Create PaymentIntent as soon as the page loads
-            let url = process.env.REACT_APP_apiUrl + settings.stripe.createPaymentIntent;
+            let url = settings.stripe.createPaymentIntent;
             
             fetch(url, {
                 method: "POST",

@@ -43,7 +43,7 @@ export default class CreateAccount extends Component {
 
     GetPasswordComplexity() {
         let me = this;
-        fetch(process.env.REACT_APP_apiUrl + settings.urls.auth.getPasswordComplexity, { 
+        fetch(settings.urls.auth.getPasswordComplexity, { 
             method: 'get', 
             headers: new Headers({
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -127,7 +127,7 @@ export default class CreateAccount extends Component {
     }
 
     SubmitForm = (formProps) => {
-        const url = process.env.REACT_APP_apiUrl + (this.state.PageType === 0 ? settings.urls.auth.register : settings.urls.user.updateUser);
+        const url = (this.state.PageType === 0 ? settings.urls.auth.register : settings.urls.user.updateUser);
         const me = this;
 
         fetch(url, { 
@@ -190,7 +190,7 @@ export default class CreateAccount extends Component {
     GetUser = () => {
         const me = this;
         const token = sessionStorage.getItem('token');
-        const url = process.env.REACT_APP_apiUrl + settings.urls.user.getUser;
+        const url = settings.urls.user.getUser;
 
         fetch(url, { 
             method: 'get', 
@@ -233,7 +233,7 @@ export default class CreateAccount extends Component {
         let me = this;
 
         if (result) {
-            const url = process.env.REACT_APP_apiUrl + settings.urls.user.disableUser;
+            const url = settings.urls.user.disableUser;
 
             fetch(url, { 
                 method: 'post', 

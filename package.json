@@ -29,15 +29,16 @@
     "reflect-metadata": "^0.2.1",
     "stripe": "^14.2.0",
     "styled-components": "^6.1.8",
+    "swagger": "^0.7.5",
     "swagger-ui-express": "^5.0.0",
-    "typedi": "^0.10.0",
-    "web-vitals": "^3.5.2",
-    "webpack-dev-server": "^5.0.2",
     "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "typedi": "^0.10.0",
+    "typescript": "^5.2.2",
+    "web-vitals": "^3.5.2",
+    "webpack-dev-server": "^5.0.2"
   },
   "scripts": {
-    "startNode": "ts-node src/api/server.ts",
+    "startNode": "ts-node server.ts",
     "start": "react-scripts start",
     "startConcurrently": "concurrently \"npm run startNode\" \"npm run start\"",
     "build": "react-scripts build",

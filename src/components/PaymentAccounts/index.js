@@ -48,7 +48,7 @@ class StripeAccount extends Component {
     }
 
     GetPaymentMethods(token) {
-        let url = process.env.REACT_APP_apiUrl + settings.stripe.paymentMethods;
+        let url = settings.stripe.paymentMethods;
         let me = this;
     
         fetch(url, { 
@@ -69,7 +69,7 @@ class StripeAccount extends Component {
     }
 
     GetPaymentMethodImages(token) {
-        let url = process.env.REACT_APP_apiUrl + settings.urls.paymentmethodimages.getPaymentMethodImages;
+        let url = settings.urls.paymentmethodimages.getPaymentMethodImages;
         let me = this;
     
         fetch(url, { 

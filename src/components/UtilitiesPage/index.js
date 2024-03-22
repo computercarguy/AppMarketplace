@@ -21,7 +21,7 @@ class UtilitiesPage extends Component {
     }
 
     componentDidMount() {
-        const url = process.env.REACT_APP_apiUrl + settings.urls.utilities.getUtilitites;
+        const url = settings.urls.utilities.getUtilitites;
         const me = this;
         const token = sessionStorage.getItem('token');
 

@@ -3,18 +3,19 @@ require('./config/env');
 import "reflect-metadata";
 import express from "express";
 import cors from 'cors';
-import { UtilitiesRouter } from './routes/utilitiesRouter';
-import { UtilitiesCreditsRouter } from "./routes/utilitiesCreditsRouter";
-import { StripeRouter } from "./routes/stripeRouter";
-import { InvoiceRouter } from "./routes/invoiceRouter";
-import { AuthenticateRouter } from "./routes/authenticateRouter";
-import { UserRouter } from "./routes/userRouter";
+import { UtilitiesRouter } from './src/api/routes/utilitiesRouter';
+import { UtilitiesCreditsRouter } from "./src/api/routes/utilitiesCreditsRouter";
+import { StripeRouter } from "./src/api/routes/stripeRouter";
+import { InvoiceRouter } from "./src/api/routes/invoiceRouter";
+import { AuthenticateRouter } from "./src/api/routes/authenticateRouter";
+import { UserRouter } from "./src/api/routes/userRouter";
 import swaggerUi = require('swagger-ui-express');
-import swaggerDocument = require('./swagger-output.json');
-import { PaymentMethodImagesRouter } from "./routes/paymentmethodimagesRouter";
-import { HealthRouter } from "./routes/healthRouter";
+import swaggerDocument = require('./src/api/swagger-output.json');
+import { PaymentMethodImagesRouter } from "./src/api/routes/paymentmethodimagesRouter";
+import { HealthRouter } from "./src/api/routes/healthRouter";
+import path from 'path';
 
-const port = 3002;
+const port = 8080;
 const app = express();
 
 app.use(cors());
@@ -37,6 +38,11 @@ app.use(function(req, res, next) {
     res.header(`Access-Control-Allow-Methods`, `GET,PUT,POST,DELETE`);
     res.header(`Access-Control-Allow-Headers`, `Content-Type`);
     next();
+});
+
+app.get('/*', (req, res) => {
+    const filename = req.params[0] ? req.params[0] : "index.html";
+    res.sendFile(path.join(__dirname, 'build', filename));
 });
 
 app.listen(port, () => {

@@ -56,7 +56,7 @@ class PurchaseCredits extends Component {
     }
 
     GetOptions = (token)  => {
-        const url = process.env.REACT_APP_apiUrl + settings.urls.utilities.getUtilitites;
+        const url = settings.urls.utilities.getUtilitites;
         const me = this;
 
         useFetchGet(url, token, (resJson) => {
@@ -73,7 +73,7 @@ class PurchaseCredits extends Component {
     GetStripeKey = (token) => {
         if (!this.state.Stripekey) {
             const me = this;
-            const url = process.env.REACT_APP_apiUrl + settings.stripe.key;
+            const url = settings.stripe.key;
 
             useFetchGet(url, token, (resJson) => {
                 if (resJson.message) {

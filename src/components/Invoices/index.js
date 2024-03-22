@@ -66,7 +66,7 @@ class Invoices extends Component {
     }
 
     GetPaymentMethods(token) {
-        let url = process.env.REACT_APP_apiUrl + settings.stripe.paymentMethods;
+        let url = settings.stripe.paymentMethods;
         let me = this;
     
         fetch(url, { 
@@ -87,7 +87,7 @@ class Invoices extends Component {
     }
 
     GetPaymentMethodImages(token) {
-        let url = process.env.REACT_APP_apiUrl + settings.urls.paymentmethodimages.getPaymentMethodImages;
+        let url = settings.urls.paymentmethodimages.getPaymentMethodImages;
         let me = this;
     
         fetch(url, { 
@@ -108,7 +108,7 @@ class Invoices extends Component {
     }
 
     GetInvoices(token) {
-        let url = process.env.REACT_APP_apiUrl + settings.urls.invoices.getInvoices;
+        let url = settings.urls.invoices.getInvoices;
         let me = this;
     
         fetch(url, { 
@@ -130,7 +130,7 @@ class Invoices extends Component {
 
     GetInvoiceItems(id, paymentMethod) {
         const token = sessionStorage.getItem('token');
-        let url = process.env.REACT_APP_apiUrl + settings.urls.invoices.getInvoiceItems + id;
+        let url = settings.urls.invoices.getInvoiceItems + id;
         let me = this;
     
         fetch(url, { 
