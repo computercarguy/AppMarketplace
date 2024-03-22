@@ -28,6 +28,7 @@
         },
         "credits": {
             "getCredits": "credits",
+            "getAllCredits": "credits/all",
             "updateCredits": "credits/update"
         },
         "utilities": {

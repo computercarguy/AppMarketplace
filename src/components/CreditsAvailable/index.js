@@ -19,7 +19,7 @@ class CreditsAvailable extends Component {
 
     componentDidMount() {
         const token = sessionStorage.getItem('token');
-        const url = settings.urls.credits.getCredits;
+        const url = settings.urls.credits.getAllCredits;
         const me = this;
 
         fetch(url, { 

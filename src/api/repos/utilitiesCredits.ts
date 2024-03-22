@@ -13,6 +13,26 @@ let auth = Container.get(Authentication);
 
 @Service()
 export class UtilitiesCredits {
+    // This is to get a list of credits for a specific user
+    getAllCredits(req: Request, res: Response) {
+        auth.getUserId(req, (userId: number) => {
+            if (!userId) {
+                useSendResponse(res);
+                return;
+            }
+            
+            let data: UserData = {OAuthUserId: userId, UtilitiesId: null, UtilitiesGuid: null};
+
+            utilitiesCreditsDb.getUtilitiesCredits(data, (response: ApiResponse) => 
+                useSendResponse(
+                    res,
+                    response.results,
+                    response == null ? settings.errorMessage : null
+                ));
+        });
+    }
+
+    // This endpoint is for other apps to get how many credits a user has for their app
     getCredits(req: Request, res: Response) {
         let utilitiesGuid: string = req.query.utilitiesGuid.toString();
 

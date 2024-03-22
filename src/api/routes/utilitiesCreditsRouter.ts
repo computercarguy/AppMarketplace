@@ -8,6 +8,7 @@ export class UtilitiesCreditsRouter {
         let router = Router();
 
         router.get('/credits', utilitiesCredits.getCredits);
+        router.get('/credits/all', utilitiesCredits.getAllCredits);
         router.post('/credits/update', (req, res) => utilitiesCredits.update(req, res));
                 
         return router;
