@@ -38,8 +38,8 @@
   },
   "scripts": {
     "startNode": "ts-node src/api/server.ts",
-    "startReact": "react-scripts start",
-    "start": "concurrently \"npm run startNode\" \"npm run startReact\"",
+    "start": "react-scripts start",
+    "startConcurrently": "concurrently \"npm run startNode\" \"npm run start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
