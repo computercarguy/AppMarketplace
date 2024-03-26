@@ -28,8 +28,6 @@ export class Authentication {
 
     async registerUser(req: Request, cbFunc: Function) {
         let url = await this.getLoginUrl() + settings.urls.auth.register;
-        console.log("loginUrl: " + this.loginUrl);
-        console.log("url: " + url);
         
         useFetch(url, "post", null, JSON.stringify(req.body), cbFunc, "application/json; charset=utf-8");
     }
