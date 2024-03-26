@@ -15,78 +15,78 @@ export class Users {
         let token = useGetBearerToken(req);
         let url = await this.getLoginUrl() + settings.urls.user.updateUser;
 
-        useFetch(url, "post", token, req.body, (response: ApiResponse) => {
+        useFetch(url, "post", token, JSON.stringify(req.body), (response: ApiResponse) => {
             useSendResponse(
                 res,
                 response.message,
                 response.error
             );
-        });
+        }, "application/json; charset=utf-8");
     }
 
     async updatePassword(req: Request, res: Response) {
         let token = useGetBearerToken(req);
         let url = await this.getLoginUrl() + settings.urls.user.updatePassword;
 
-        useFetch(url, "post", token, req.body, (response: ApiResponse) => {
+        useFetch(url, "post", token, JSON.stringify(req.body), (response: ApiResponse) => {
             useSendResponse(
                 res,
                 response.message,
                 response.error
             );
-        });
+        }, "application/json; charset=utf-8");
     }
 
     async disable(req: Request, res: Response) {
         let token = useGetBearerToken(req);
         let url = await this.getLoginUrl() + settings.urls.user.disableUser;
 
-        useFetch(url, "post", token, req.body, (response: ApiResponse) => {
+        useFetch(url, "post", token, JSON.stringify(req.body), (response: ApiResponse) => {
             useSendResponse(
                 res,
                 response.message,
                 response.error
             );
-        });
+        }, "application/json; charset=utf-8");
     }
 
     async createPasswordReset(req: Request, res: Response) {
         let token = useGetBearerToken(req);
         let url = await this.getLoginUrl() + settings.urls.user.createPasswordReset;
 
-        useFetch(url, "post", token, req.body, (response: ApiResponse) => {
+        useFetch(url, "post", token, JSON.stringify(req.body), (response: ApiResponse) => {
             useSendResponse(
                 res,
                 response.message,
                 response.error
             );
-        });
+        }, "application/json; charset=utf-8");
     }
 
     async doPasswordReset(req: Request, res: Response) {
         let token = useGetBearerToken(req);
         let url = await this.getLoginUrl() + settings.urls.user.doPasswordReset;
 
-        useFetch(url, "post", token, req.body, (response: ApiResponse) => {
+        useFetch(url, "post", token, JSON.stringify(req.body), (response: ApiResponse) => {
             useSendResponse(
                 res,
                 response.message,
                 response.error
             );
-        });
+        }, "application/json; charset=utf-8");
     }
 
     async forgotUsername(req: Request, res: Response) {
         let token = useGetBearerToken(req);
         let url = await this.getLoginUrl() + settings.urls.user.forgotUsername;
 
-        useFetch(url, "post", token, req.body, (response: ApiResponse) => {
+        useFetch(url, "post", token, JSON.stringify(req.body), (response: ApiResponse) => {
             useSendResponse(
                 res,
                 response.message,
                 response.error
             );
-        });
+        }, "application/json; charset=utf-8");
     }
 
     async getUser(req: Request, res: Response) {
