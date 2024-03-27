@@ -1,5 +1,9 @@
+import Container from "typedi";
+import { EventLogDb } from "../db/eventLogDb";
+
 export default async function useFetch(url: string, method: string, authToken: string | null, body: string, cbFunc: Function, contentType: string = null) {
     let headerObject = {};
+    let eventLogDb = Container.get(EventLogDb);
 
     if (authToken) {
         headerObject["Authorization"] = "bearer " + authToken;
@@ -25,6 +29,10 @@ export default async function useFetch(url: string, method: string, authToken: s
     })
     .then(function(resJson) {
         if (resJson) {
+            if (resJson.error){
+                eventLogDb.savelog("useFetch.ts", "fetch", "then", null, resJson.error);
+            }
+
             if (cbFunc) {
                 cbFunc(resJson);
             } 
@@ -33,11 +41,11 @@ export default async function useFetch(url: string, method: string, authToken: s
             }
         }
         else {
-            console.log(resJson);
+            eventLogDb.savelog("users.ts", "fetch", "then else", null, JSON.stringify(resJson));
         }
     })
     .catch(error => {
-        console.log(error);
+        eventLogDb.savelog("users.ts", "fetch", "catch", null, JSON.stringify(error));
     });
 
     if (response && !cbFunc) {

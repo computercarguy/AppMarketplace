@@ -1,14 +1,16 @@
-import { Service } from 'typedi';
+import { Container, Service } from "typedi";
 import * as settings from '../../Settings.json';
 import useFetch from '../hooks/useFetch';
 import { ApiResponse } from '../models/ApiResponse';
 import useGetBearerToken from '../hooks/useGetBearerToken';
 import { Request } from "express-serve-static-core";
 import useAwsSecrets from '../hooks/useAwsSecrets';
+import { EventLogDb } from "../db/eventLogDb";
 
 @Service()
 export class Authentication {
     private loginUrl: String = null;
+    private eventLogDb = Container.get(EventLogDb);
 
     async getUserId(req: Request, cbFunc: Function) {
         let token = useGetBearerToken(req);
@@ -58,7 +60,7 @@ export class Authentication {
 
     private async getLoginUrl() {
         if (this.loginUrl === null) {
-            let secrets = await useAwsSecrets(null);
+            let secrets = await useAwsSecrets(this.eventLogDb.savelog, null);
 
             if (!secrets) {
                 return null;

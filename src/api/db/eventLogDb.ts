@@ -10,12 +10,11 @@ export class EventLogDb {
         this.dbPool = injectedPool;
     }
     
-    log(message: string) {
-        let query = `INSERT INTO eventLog (Message)
-            VALUES (:message);`; 
-        
-        const values = {message: message};
-
-        this.dbPool.query(query, values, null);
+    async savelog(filename: string, methodname: string, stage: string, userid: string, message: string) {
+        this.dbPool.savelog(filename, methodname, stage, userid, message);
+    }
+    
+    concatErrorMessage(errorMessage: string, jsonBody: any) {
+        return `${errorMessage}/r/n/r/n${JSON.stringify(jsonBody)}`;
     }
 }

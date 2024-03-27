@@ -3,9 +3,14 @@ import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-sec
 const secretName = process.env.secretName;
 const client = new SecretsManagerClient({region: "us-west-2"});
 
-export default async function useAwsSecrets (cbfunc: any) {
+export default async function useAwsSecrets (savelog: Function, cbfunc: any) {
     if (!secretName) {
         return;
+    }
+    
+    console.log("getting secrets");
+    if (savelog) {
+        //savelog("useAwsSecrets.js", "useAwsSecrets", "query", null, "getting secrets");
     }
 
     try {
@@ -17,11 +22,14 @@ export default async function useAwsSecrets (cbfunc: any) {
         );
     
         if (!response) {
+            console.log("getting secrets failed");
+            if (savelog) {
+                savelog("useAwsSecrets.js", "useAwsSecrets", "response", null, "getting secrets failed");
+            }
             return;
         }
 
         const secret = JSON.parse(response.SecretString);
-
         if (cbfunc) {
             cbfunc(secret);
         }
@@ -31,6 +39,8 @@ export default async function useAwsSecrets (cbfunc: any) {
     } catch (error) {
         // For a list of exceptions thrown, see
         // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-        throw error;
+        if (savelog) {
+            savelog("useAwsSecrets.js", "useAwsSecrets", "response", null, error);
+        }
     }
 }
