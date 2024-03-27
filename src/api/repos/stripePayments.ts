@@ -14,7 +14,7 @@ import { InvoiceItemsDb } from "../db/invoiceItemsDb";
 import { UtilitiesCreditsDb } from "../db/utilitiesCreditsDb";
 import { UtilitiesCreditsData } from "../models/UtilitiesCreditsData";
 import { InvoiceItem } from "../models/InvoiceItem";
-import { EventLogDb } from "../db/eventLogDb";
+import { EventLog } from "./eventLog";
 import useAwsSecrets from "../hooks/useAwsSecrets";
 import { UtilityItems } from "../models/UtilityItems";
 import { Users } from "./users";
@@ -32,12 +32,12 @@ const config:Stripe.StripeConfig = {
 let stripeKey = null;
 let stripe = null;
 const auth = Container.get(Authentication);
-const eventLogDb = Container.get(EventLogDb);
+const eventLog = Container.get(EventLog);
 
 GetAwsSecrets();
 
 function GetAwsSecrets() {
-    useAwsSecrets(eventLogDb.savelog, (secrets) => {
+    useAwsSecrets(eventLog.savelog, (secrets) => {
         stripeKey = secrets.stripekey;
         stripe = new Stripe(secrets.stripekey_private, config);
     });
@@ -213,7 +213,7 @@ export class StripePayments {
             );
         } 
         catch (err) {
-            eventLogDb.savelog("stripePatments.ts", "webhook", "Webhook signature", null, `⚠️  Webhook signature verification failed.`);
+            eventLog.savelog("stripePatments.ts", "webhook", "Webhook signature", null, `⚠️  Webhook signature verification failed.`);
             res.sendStatus(400);
             return;
         }
@@ -228,8 +228,8 @@ export class StripePayments {
         else if (eventType === "payment_intent.payment_failed") {
             // Cast the event into a PaymentIntent to make use of the types.
             const pi: Stripe.PaymentIntent = data.object as Stripe.PaymentIntent;
-            eventLogDb.savelog("stripePatments.ts", "webhook", "payment failed 1", null, `🔔  Webhook received: ${pi.object} ${pi.status}!`);
-            eventLogDb.savelog("stripePatments.ts", "webhook", "payment failed 2", null, "❌ Payment failed.");
+            eventLog.savelog("stripePatments.ts", "webhook", "payment failed 1", null, `🔔  Webhook received: ${pi.object} ${pi.status}!`);
+            eventLog.savelog("stripePatments.ts", "webhook", "payment failed 2", null, "❌ Payment failed.");
         }
 
         res.sendStatus(200);
@@ -241,8 +241,8 @@ export class StripePayments {
         // Funds have been captured
         // Fulfill any orders, e-mail receipts, etc
         // To cancel the payment after capture you will need to issue a Refund (https://stripe.com/docs/api/refunds).
-        eventLogDb.savelog("stripePatments.ts", "PaymentIntentSucceeded", "payment captured 1", null, `🔔  Webhook received: ${pi.object} ${pi.status}!`);
-        eventLogDb.savelog("stripePatments.ts", "PaymentIntentSucceeded", "payment captured 2", null, "💰 Payment captured!");
+        eventLog.savelog("stripePatments.ts", "PaymentIntentSucceeded", "payment captured 1", null, `🔔  Webhook received: ${pi.object} ${pi.status}!`);
+        eventLog.savelog("stripePatments.ts", "PaymentIntentSucceeded", "payment captured 2", null, "💰 Payment captured!");
 
         let invoicesDb = Container.get(InvoicesDb);
 

@@ -14,10 +14,10 @@ export class InvoicesDb {
         const values = {userId: userId.toString()};
         const whereClause = invoiceIds ? ` AND id IN ('${invoiceIds.join("','" + "'")}') ` : "";
 
-        const query = `SELECT invoice.Id, invoicestatus.Name as Status, PurchasedDate, paymentMethod.Name as PaymentMethod, total
+        const query = `SELECT invoice.Id, invoicestatus.Name as Status, PurchasedDate, paymentmethod.Name as PaymentMethod, total
             FROM invoice 
             LEFT JOIN invoicestatus on invoicestatus.Id = invoice.StatusId
-            LEFT JOIN paymentMethod on paymentMethod.Id = invoice.PaymentMethodId
+            LEFT JOIN paymentmethod on paymentmethod.Id = invoice.PaymentMethodId
             WHERE invoice.StatusId in (2,5) 
             ${whereClause}
             ORDER BY PurchasedDate DESC `; 

@@ -12,7 +12,7 @@ export class PaymentOptionsDb {
     
     getPaymentOptions(userId: number, cbFunc: any) {
         let query = `SELECT StripeCustomer
-            FROM paymentOptions 
+            FROM paymentoptions 
             WHERE OAuthUserId = :userId;`; 
         
         const values = {userId: userId.toString()};
@@ -21,7 +21,7 @@ export class PaymentOptionsDb {
     }
 
     updatePaymentOptions(userId: number, stripeCustomer: string, cbFunc: any) {
-        let query = `UPDATE paymentOptions 
+        let query = `UPDATE paymentoptions 
             set StripeCustomer = :stripeCustomer
             WHERE OAuthUserId = :userId;`; 
         
@@ -31,7 +31,7 @@ export class PaymentOptionsDb {
     }
 
     createPaymentOptions(userId: number, stripeCustomer: string, cbFunc: any) {
-        let query = `INSERT INTO paymentOptions (OAuthUserId, StripeCustomer)
+        let query = `INSERT INTO paymentoptions (OAuthUserId, StripeCustomer)
             VALUES (:userId, ':stripeCustomer');`; 
         
         const values = {userId: userId.toString(), stripeCustomer: stripeCustomer};

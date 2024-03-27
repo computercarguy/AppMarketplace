@@ -5,12 +5,12 @@ import { ApiResponse } from '../models/ApiResponse';
 import useGetBearerToken from '../hooks/useGetBearerToken';
 import { Request } from "express-serve-static-core";
 import useAwsSecrets from '../hooks/useAwsSecrets';
-import { EventLogDb } from "../db/eventLogDb";
+import { EventLog } from "./eventLog";
 
 @Service()
 export class Authentication {
     private loginUrl: String = null;
-    private eventLogDb = Container.get(EventLogDb);
+    private eventLog = Container.get(EventLog);
 
     async getUserId(req: Request, cbFunc: Function) {
         let token = useGetBearerToken(req);
@@ -60,7 +60,7 @@ export class Authentication {
 
     private async getLoginUrl() {
         if (this.loginUrl === null) {
-            let secrets = await useAwsSecrets(this.eventLogDb.savelog, null);
+            let secrets = await useAwsSecrets(this.eventLog.savelog, null);
 
             if (!secrets) {
                 return null;

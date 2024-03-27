@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 import { PaymentOptionsDb } from "../db/paymentOptionsDb";
 import useAwsSecrets from "../hooks/useAwsSecrets";
 import { OAuthUserData } from "../models/OAuthUserData";
-import { EventLogDb } from "../db/eventLogDb";
+import { EventLog } from "./eventLog";
 
 const config:Stripe.StripeConfig = {
     apiVersion: '2023-10-16',
@@ -19,9 +19,9 @@ let stripe = null;
 GetAwsSecrets();
 
 function GetAwsSecrets() {
-    const eventLogDb = Container.get(EventLogDb);
+    const eventLog = Container.get(EventLog);
 
-    useAwsSecrets(eventLogDb.savelog, (secrets) => {
+    useAwsSecrets(eventLog.savelog, (secrets) => {
         stripe = new Stripe(secrets.stripekey_private, config);
     });
 }

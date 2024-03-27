@@ -15,7 +15,7 @@ export class Health {
                 return;
             }
 
-            useSendResponse(res, "App Mrketplace is running.", null);
+            useSendResponse(res, "App Marketplace is running.", null);
         });
     }
 }

@@ -6,12 +6,12 @@ import useGetBearerToken from "../hooks/useGetBearerToken";
 import * as settings from '../../Settings.json';
 import useFetch from "../hooks/useFetch";
 import useAwsSecrets from "../hooks/useAwsSecrets";
-import { EventLogDb } from "../db/eventLogDb";
+import { EventLog } from "./eventLog";
 
 @Service()
 export class Users {
     private loginUrl: String = null;
-    private eventLogDb = Container.get(EventLogDb);
+    private eventLog = Container.get(EventLog);
 
     async update(req: Request, res: Response) {
         let token = useGetBearerToken(req);
@@ -19,7 +19,7 @@ export class Users {
 
         useFetch(url, "post", token, JSON.stringify(req.body), (response: ApiResponse) => {
             if (response.error){
-                this.eventLogDb.savelog("users.ts", "update", "useFetch", null, this.eventLogDb.concatErrorMessage(response.error, req.body));
+                this.eventLog.savelog("users.ts", "update", "useFetch", null, this.eventLog.concatErrorMessage(response.error, req.body));
             }
 
             useSendResponse(
@@ -36,7 +36,7 @@ export class Users {
 
         useFetch(url, "post", token, JSON.stringify(req.body), (response: ApiResponse) => {
             if (response.error){
-                this.eventLogDb.savelog("users.ts", "updatePassword", "useFetch", null, this.eventLogDb.concatErrorMessage(response.error, req.body));
+                this.eventLog.savelog("users.ts", "updatePassword", "useFetch", null, this.eventLog.concatErrorMessage(response.error, req.body));
             }
 
             useSendResponse(
@@ -53,7 +53,7 @@ export class Users {
 
         useFetch(url, "post", token, JSON.stringify(req.body), (response: ApiResponse) => {
             if (response.error){
-                this.eventLogDb.savelog("users.ts", "disable", "useFetch", null, this.eventLogDb.concatErrorMessage(response.error, req.body));
+                this.eventLog.savelog("users.ts", "disable", "useFetch", null, this.eventLog.concatErrorMessage(response.error, req.body));
             }
 
             useSendResponse(
@@ -70,7 +70,7 @@ export class Users {
 
         useFetch(url, "post", token, JSON.stringify(req.body), (response: ApiResponse) => {
             if (response.error){
-                this.eventLogDb.savelog("users.ts", "createPasswordReset", "useFetch", null, this.eventLogDb.concatErrorMessage(response.error, req.body));
+                this.eventLog.savelog("users.ts", "createPasswordReset", "useFetch", null, this.eventLog.concatErrorMessage(response.error, req.body));
             }
 
             useSendResponse(
@@ -87,7 +87,7 @@ export class Users {
 
         useFetch(url, "post", token, JSON.stringify(req.body), (response: ApiResponse) => {
             if (response.error){
-                this.eventLogDb.savelog("users.ts", "doPasswordReset", "useFetch", null, this.eventLogDb.concatErrorMessage(response.error, req.body));
+                this.eventLog.savelog("users.ts", "doPasswordReset", "useFetch", null, this.eventLog.concatErrorMessage(response.error, req.body));
             }
 
             useSendResponse(
@@ -104,7 +104,7 @@ export class Users {
 
         useFetch(url, "post", token, JSON.stringify(req.body), (response: ApiResponse) => {
             if (response.error){
-                this.eventLogDb.savelog("users.ts", "forgotUsername", "useFetch", null, this.eventLogDb.concatErrorMessage(response.error, req.body));
+                this.eventLog.savelog("users.ts", "forgotUsername", "useFetch", null, this.eventLog.concatErrorMessage(response.error, req.body));
             }
 
             useSendResponse(
@@ -121,7 +121,7 @@ export class Users {
 
         useFetch(url, "get", token, null, (response: ApiResponse) => {
             if (response.error){
-                this.eventLogDb.savelog("users.ts", "getUser", "useFetch", null, this.eventLogDb.concatErrorMessage(response.error, req.body));
+                this.eventLog.savelog("users.ts", "getUser", "useFetch", null, this.eventLog.concatErrorMessage(response.error, req.body));
             }
 
             useSendResponse(
@@ -143,7 +143,7 @@ export class Users {
     
     private async getLoginUrl() {
         if (this.loginUrl === null) {
-            let secrets = await useAwsSecrets(this.eventLogDb.savelog, null);
+            let secrets = await useAwsSecrets(this.eventLog.savelog, null);
             this.loginUrl = secrets.login;
         }
 

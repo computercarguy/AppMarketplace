@@ -1,8 +1,8 @@
 import { Inject, Service } from "typedi";
-import { DbWrapper } from "./dbWrapper";
+import { DbWrapper } from "../db/dbWrapper";
 
 @Service()
-export class EventLogDb {
+export class EventLog {
     
     private dbPool: DbWrapper;
 

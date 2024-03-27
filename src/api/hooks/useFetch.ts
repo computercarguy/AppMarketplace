@@ -1,9 +1,9 @@
 import Container from "typedi";
-import { EventLogDb } from "../db/eventLogDb";
+import { EventLog } from "../repos/eventLog";
 
 export default async function useFetch(url: string, method: string, authToken: string | null, body: string, cbFunc: Function, contentType: string = null) {
     let headerObject = {};
-    let eventLogDb = Container.get(EventLogDb);
+    let eventLog = Container.get(EventLog);
 
     if (authToken) {
         headerObject["Authorization"] = "bearer " + authToken;
@@ -30,7 +30,7 @@ export default async function useFetch(url: string, method: string, authToken: s
     .then(function(resJson) {
         if (resJson) {
             if (resJson.error){
-                eventLogDb.savelog("useFetch.ts", "fetch", "then", null, resJson.error);
+                eventLog.savelog("useFetch.ts", "fetch", "then", null, resJson.error);
             }
 
             if (cbFunc) {
@@ -41,11 +41,11 @@ export default async function useFetch(url: string, method: string, authToken: s
             }
         }
         else {
-            eventLogDb.savelog("users.ts", "fetch", "then else", null, JSON.stringify(resJson));
+            eventLog.savelog("users.ts", "fetch", "then else", null, JSON.stringify(resJson));
         }
     })
     .catch(error => {
-        eventLogDb.savelog("users.ts", "fetch", "catch", null, JSON.stringify(error));
+        eventLog.savelog("users.ts", "fetch", "catch", null, JSON.stringify(error));
     });
 
     if (response && !cbFunc) {
