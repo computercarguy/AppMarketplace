@@ -40,7 +40,9 @@ app.use(function(req, res, next) {
 });
 
 app.use("/", express.static(__dirname  + '/build'));
-app.use("/images", express.static(__dirname + '/build/images'));
+app.use("/static/js", express.static(__dirname + '/build/static/js'));
+app.use("/static/media", express.static(__dirname + '/build/static/media'));
+app.use("/static/css", express.static(__dirname + '/build/static/css'));
 
 app.listen(port, () => {
     console.log(`Server running. Port: ${port}`);
