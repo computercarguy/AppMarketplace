@@ -6,6 +6,7 @@ import useGetBearerToken from '../hooks/useGetBearerToken';
 import { Request } from "express-serve-static-core";
 import useAwsSecrets from '../hooks/useAwsSecrets';
 import { EventLog } from "./eventLog";
+import path from 'path';
 
 @Service()
 export class Authentication {
@@ -42,9 +43,8 @@ export class Authentication {
     }
 
     async login(req: Request, cbFunc: Function) {
-        let url = await this.getLoginUrl() + settings.urls.auth.login;
-        console.log("loginUrl: " + this.loginUrl);
-        console.log("url: " + url);
+        let loginUrl = await this.getLoginUrl() as string;
+        let url = path.join(loginUrl, settings.urls.auth.login);
 
         req.body["grant_type"] = "password";
         req.body["client_id"] = "auth";

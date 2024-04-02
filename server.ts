@@ -13,7 +13,6 @@ import swaggerUi = require('swagger-ui-express');
 import swaggerDocument = require('./src/api/swagger-output.json');
 import { PaymentMethodImagesRouter } from "./src/api/routes/paymentmethodimagesRouter";
 import { HealthRouter } from "./src/api/routes/healthRouter";
-import path from 'path';
 
 const port = 8080;
 const app = express();
@@ -40,10 +39,8 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.get('/*', (req, res) => {
-    const filename = req.params[0] ? req.params[0] : "index.html";
-    res.sendFile(path.join(__dirname, 'build', filename));
-});
+app.use("/", express.static(__dirname  + '/build'));
+app.use("/images", express.static(__dirname + '/build/images'));
 
 app.listen(port, () => {
     console.log(`Server running. Port: ${port}`);

@@ -5,6 +5,7 @@
         "emitDecoratorMetadata": true,
         "strictPropertyInitialization": false,
         "module": "NodeNext",
-        "moduleResolution": "NodeNext"
+        "moduleResolution": "NodeNext",
+        "outDir": "nodeBuild/"
     }
 }
