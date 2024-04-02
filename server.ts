@@ -13,6 +13,7 @@ import swaggerUi = require('swagger-ui-express');
 import swaggerDocument = require('./src/api/swagger-output.json');
 import { PaymentMethodImagesRouter } from "./src/api/routes/paymentmethodimagesRouter";
 import { HealthRouter } from "./src/api/routes/healthRouter";
+import path from 'path';
 
 const port = 8080;
 const app = express();
@@ -38,11 +39,22 @@ app.use(function(req, res, next) {
     res.header(`Access-Control-Allow-Headers`, `Content-Type`);
     next();
 });
-
+/*
+app.use("/static/js", express.static(__dirname + '/build/static/js/'));
+app.use("/static/media", express.static(__dirname + '/build/static/media/'));
+app.use("/static/css", express.static(__dirname + '/build/static/css/'));
 app.use("/", express.static(__dirname  + '/build'));
-app.use("/static/js", express.static(__dirname + '/build/static/js'));
-app.use("/static/media", express.static(__dirname + '/build/static/media'));
-app.use("/static/css", express.static(__dirname + '/build/static/css'));
+*/
+
+app.get('/*', (req, res) => {
+    const filename = req.params[0] ? req.params[0] : "index.html";
+    res.sendFile(path.join(__dirname, 'build', filename), null, function (err) {
+        if (err) {
+          console.log(err);
+          res.status(404).end();
+        }
+      });
+});
 
 app.listen(port, () => {
     console.log(`Server running. Port: ${port}`);
