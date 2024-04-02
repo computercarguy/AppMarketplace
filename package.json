@@ -41,7 +41,7 @@
     "build": "react-scripts build",
     "buildNode" : "tsc",
     "copywebsitefiles": "copyfiles -u 1 build/** nodeBuild/",
-    "copyconfigfiles": "copyfiles -u 1 config/** nodeBuild/",
+    "copyconfigfiles": "copyfiles -u 1 -a config/** nodeBuild/",
     "copystaticfiles": "copyfiles -u 1 build/static/** nodeBuild/",
     "copyjsfiles": "copyfiles -u 1 build/static/js/** nodeBuild/",
     "copycssfiles": "copyfiles -u 1 build/static/css/** nodeBuild/",
