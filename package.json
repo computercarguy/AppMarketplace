@@ -38,10 +38,14 @@
   "scripts": {
     "startNode": "node nodeBuild/server.js",
     "start": "react-scripts start",
-    "build": "react-scripts build && tsc && npm run copywebsitefiles && npm run copyconfigfiles",
+    "build": "react-scripts build",
     "buildNode" : "tsc",
     "copywebsitefiles": "copyfiles -a build/** nodeBuild/",
     "copyconfigfiles": "copyfiles -a config/** nodeBuild/",
+    "copystaticfiles": "copyfiles -a build/static/** nodeBuild/",
+    "copyjsfiles": "copyfiles -a build/static/js** nodeBuild/",
+    "copycssfiles": "copyfiles -a build/static/css** nodeBuild/",
+    "copymediafiles": "copyfiles -a build/static/media** nodeBuild/",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
