@@ -13,7 +13,6 @@ import swaggerUi = require('swagger-ui-express');
 import swaggerDocument = require('./src/api/swagger-output.json');
 import { PaymentMethodImagesRouter } from "./src/api/routes/paymentmethodimagesRouter";
 import { HealthRouter } from "./src/api/routes/healthRouter";
-import path from 'path';
 
 const port = 8080;
 const app = express();
