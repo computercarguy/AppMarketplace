@@ -26,7 +26,10 @@ export class DbWrapper {
         {
             this.pool.query(parameterizedQuery, (error, results) => {
                 if (error) {
-                    this.savelog("dbWrapper.ts", "query", "query", null, JSON.stringify(error));
+                    if (cbFunc) {
+                        cbFunc(this.setResponse(error, results));
+                    }
+                    //this.savelog("dbWrapper.ts", "query", "query", null, JSON.stringify(error));
                     return;
                 }
 
