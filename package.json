@@ -38,7 +38,7 @@
   "scripts": {
     "startNode": "node nodeBuild/server.js",
     "start": "react-scripts start",
-    "build": "SET BUILD_PATH=nodeBuild/build/ && react-scripts build",
+    "build": "BUILD_PATH='nodeBuild/build/' react-scripts build",
     "buildNode" : "tsc",
     "copyconfigfiles": "copyfiles -u 1 config/* nodeBuild/config/",
     "test": "react-scripts test",
