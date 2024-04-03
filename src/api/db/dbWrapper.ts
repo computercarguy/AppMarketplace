@@ -37,7 +37,9 @@ export class DbWrapper {
         }
         catch (err)
         {
-            console.log(err);
+            if (cbFunc) {
+                cbFunc(this.setResponse(err, null));
+            }
         }
     }
 
