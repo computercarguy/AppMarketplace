@@ -11,8 +11,8 @@ export class Health {
     async getHealth(req: Request, res: Response) {
         this.dbWrapper.healthCheck((response: ApiResponse) => {
             if (response.error) {
-                this.dbWrapper.savelog("health.ts", "getHealth", "healthCheck", null, JSON.stringify(response.error));
                 useSendResponse(res, "App Marketplace is running with issues.", JSON.stringify(response.error));
+                //this.dbWrapper.savelog("health.ts", "getHealth", "healthCheck", null, JSON.stringify(response.error));
                 return;
             }
 
