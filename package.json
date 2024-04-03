@@ -38,14 +38,9 @@
   "scripts": {
     "startNode": "node nodeBuild/server.js",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "SET BUILD_PATH=nodeBuild/build/ && react-scripts build",
     "buildNode" : "tsc",
-    "copywebsitefiles": "copyfiles -u 1 build/* nodeBuild/",
     "copyconfigfiles": "copyfiles -u 1 config/* nodeBuild/config/",
-    "copystaticfiles": "copyfiles -u 1 build/static/* nodeBuild/",
-    "copyjsfiles": "copyfiles -u 1 build/static/js/* nodeBuild/",
-    "copycssfiles": "copyfiles -u 1 build/static/css/* nodeBuild/",
-    "copymediafiles": "copyfiles -u 1 build/static/media/* nodeBuild/",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

@@ -10,12 +10,7 @@ phases:
       - echo Build started on `date`
       - npm run build
       - npm run buildNode
-      - npm run copywebsitefiles
       - npm run copyconfigfiles
-      - npm run copystaticfiles
-      - npm run copyjsfiles
-      - npm run copycssfiles
-      - npm run copymediafiles
   post_build:
     commands:
       - echo Build completed on `date`
