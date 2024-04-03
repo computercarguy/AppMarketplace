@@ -8,10 +8,6 @@ import useAwsSecrets from '../hooks/useAwsSecrets';
 export class DbWrapper {
     private pool: Pool = null;
 
-    constructor() {
-        useAwsSecrets(null, this.setPool);
-    }
-
     async savelog(filename: string, methodname: string, stage: string, userid: string, message: string) {
         if (!this.pool) {
             return;

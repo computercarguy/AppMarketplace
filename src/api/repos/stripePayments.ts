@@ -20,51 +20,58 @@ import { UtilityItems } from "../models/UtilityItems";
 import { Users } from "./users";
 import { PaymentMethodDataDTO } from "../models/PaymentMethodDataDTO";
 
-const config:Stripe.StripeConfig = {
-    apiVersion: settings.stripe.apiVersion as Stripe.StripeConfig["apiVersion"],
-    appInfo: { // For sample support and debugging, not required for production:
-        name: "stripe-samples/accept-a-payment",
-        url: "https://github.com/stripe-samples",
-        version: "0.0.2",
-    },
-    typescript: true,
-};
-let stripeKey = null;
-let stripe = null;
-const auth = Container.get(Authentication);
-const eventLog = Container.get(EventLog);
-
-GetAwsSecrets();
-
-function GetAwsSecrets() {
-    useAwsSecrets(eventLog.savelog, (secrets) => {
-        stripeKey = secrets.stripekey;
-        stripe = new Stripe(secrets.stripekey_private, config);
-    });
-}
-
 @Service()
 export class StripePayments {
+    private stripeKey: string = null;
+    private stripe: Stripe = null;
+    private auth = Container.get(Authentication);
+    private eventLog = Container.get(EventLog);
+
+    private config:Stripe.StripeConfig = {
+        apiVersion: settings.stripe.apiVersion as Stripe.StripeConfig["apiVersion"],
+        appInfo: { // For sample support and debugging, not required for production:
+            name: "stripe-samples/accept-a-payment",
+            url: "https://github.com/stripe-samples",
+            version: "0.0.2",
+        },
+        typescript: true,
+    };
+    
+    constructor() {
+        this.GetAwsSecrets();
+    }
+    
+    private async GetAwsSecrets() {
+        useAwsSecrets(this.eventLog.savelog, (secrets) => {
+            this.stripeKey = secrets.stripekey;
+            this.stripe = new Stripe(secrets.stripekey_private, this.config);
+        });
+    }
+
     createPaymentIntent(req: Request, res: Response) {
         let total = this.getTotal(req.body);
         let paymentOptionsDb = Container.get(PaymentOptionsDb);
         let invoicesDb = Container.get(InvoicesDb);
         let invoiceItemsDb = Container.get(InvoiceItemsDb);
 
-        auth.getUserId(req, (userId: number) => {
+        this.auth.getUserId(req, (userId: number) => {
             if (!userId) {
                 useSendResponse(res);
                 return;
             }
 
             paymentOptionsDb.getPaymentOptions(userId, async (paymentOptions: ApiResponse) => {
+                if (!this.stripe) {
+                    await this.GetAwsSecrets();
+                }
+
                 let option = paymentOptions.results[0] as PaymentOptions;
 
                 let stripeCustomerNumber: string = paymentOptions && paymentOptions.results && paymentOptions.results.length > 0
                     ? option.StripeCustomer
                     : await this.CreateCustomer(req);
 
-                const paymentIntent = await stripe.paymentIntents.create({
+                const paymentIntent = await this.stripe.paymentIntents.create({
                     customer: stripeCustomerNumber,
                     amount: total * 100,
                     currency: 'usd',
@@ -91,18 +98,22 @@ export class StripePayments {
     getPaymentMethods(req: Request, res: Response) {
         let paymentOptionsDb = Container.get(PaymentOptionsDb);
 
-        auth.getUserId(req, (userId: number) => {
+        this.auth.getUserId(req, (userId: number) => {
             if (!userId) {
                 useSendResponse(res);
                 return;
             }
 
             paymentOptionsDb.getPaymentOptions(userId, async (paymentOptions: ApiResponse) => {
+                if (!this.stripe) {
+                    await this.GetAwsSecrets();
+                }
+
                 let paymentMethods: Stripe.ApiList<Stripe.PaymentMethod> = null;
                 let option = paymentOptions.results[0] as PaymentOptions;
 
                 if (paymentOptions && paymentOptions.results && paymentOptions.results.length > 0) {
-                    paymentMethods = await stripe.customers.listPaymentMethods(option.StripeCustomer);
+                    paymentMethods = await this.stripe.customers.listPaymentMethods(option.StripeCustomer);
                 }
 
                 if (!paymentMethods || !paymentMethods.data || paymentMethods.data.length == 0) {
@@ -126,15 +137,19 @@ export class StripePayments {
         let invoicesDb = Container.get(InvoicesDb);
         let invoiceItemsDb = Container.get(InvoiceItemsDb);
 
-        auth.getUserId(req, async (userId: number) => {
+        this.auth.getUserId(req, async (userId: number) => {
             if (!userId) {
                 useSendResponse(res);
                 return;
             }
 
+            if (!this.stripe) {
+                await this.GetAwsSecrets();
+            }
+
             let id = req.body.id;
             let amount = req.body.amount;
-            const paymentIntent = await stripe.paymentIntents.update(
+            const paymentIntent = await this.stripe.paymentIntents.update(
                 id,
                 {amount: amount}
             );
@@ -161,13 +176,17 @@ export class StripePayments {
         let invoicesDb = Container.get(InvoicesDb);
         let invoiceItemsDb = Container.get(InvoiceItemsDb);
 
-        auth.getUserId(req, async (userId: number) => {
+        this.auth.getUserId(req, async (userId: number) => {
             if (!userId) {
                 useSendResponse(res);
                 return;
             }
 
-            const paymentIntent = await stripe.paymentIntents.retrieve(req.body.id);
+            if (!this.stripe) {
+                await this.GetAwsSecrets();
+            }
+
+            const paymentIntent = await this.stripe.paymentIntents.retrieve(req.body.id);
 
             if (paymentIntent.status !== "succeeded") {
                 useSendResponse(res);
@@ -191,29 +210,33 @@ export class StripePayments {
     }
 
     getKey(req: Request, res: Response) {
-        auth.getUserId(req, async (userId: number) => {
+        this.auth.getUserId(req, async (userId: number) => {
             if (!userId) {
                 useSendResponse(res);
                 return;
             }
 
-            useSendResponse(res, stripeKey, null);
+            useSendResponse(res, this.stripeKey, null);
         });
     }
 
-    webhook(req: Request, res: Response) {
+    async webhook(req: Request, res: Response) {
         // Retrieve the event by verifying the signature using the raw body and secret.
         let event: Stripe.Event;
 
+        if (!this.stripe) {
+            await this.GetAwsSecrets();
+        }
+
         try {
-            event = stripe.webhooks.constructEvent(
+            event = this.stripe.webhooks.constructEvent(
                 req.body,
                 req.headers["stripe-signature"],
                 process.env.STRIPE_WEBHOOK_SECRET
             );
         } 
         catch (err) {
-            eventLog.savelog("stripePatments.ts", "webhook", "Webhook signature", null, `⚠️  Webhook signature verification failed.`);
+            this.eventLog.savelog("stripePatments.ts", "webhook", "Webhook signature", null, `⚠️  Webhook signature verification failed.`);
             res.sendStatus(400);
             return;
         }
@@ -228,8 +251,8 @@ export class StripePayments {
         else if (eventType === "payment_intent.payment_failed") {
             // Cast the event into a PaymentIntent to make use of the types.
             const pi: Stripe.PaymentIntent = data.object as Stripe.PaymentIntent;
-            eventLog.savelog("stripePatments.ts", "webhook", "payment failed 1", null, `🔔  Webhook received: ${pi.object} ${pi.status}!`);
-            eventLog.savelog("stripePatments.ts", "webhook", "payment failed 2", null, "❌ Payment failed.");
+            this.eventLog.savelog("stripePatments.ts", "webhook", "payment failed 1", null, `🔔  Webhook received: ${pi.object} ${pi.status}!`);
+            this.eventLog.savelog("stripePatments.ts", "webhook", "payment failed 2", null, "❌ Payment failed.");
         }
 
         res.sendStatus(200);
@@ -241,8 +264,8 @@ export class StripePayments {
         // Funds have been captured
         // Fulfill any orders, e-mail receipts, etc
         // To cancel the payment after capture you will need to issue a Refund (https://stripe.com/docs/api/refunds).
-        eventLog.savelog("stripePatments.ts", "PaymentIntentSucceeded", "payment captured 1", null, `🔔  Webhook received: ${pi.object} ${pi.status}!`);
-        eventLog.savelog("stripePatments.ts", "PaymentIntentSucceeded", "payment captured 2", null, "💰 Payment captured!");
+        this.eventLog.savelog("stripePatments.ts", "PaymentIntentSucceeded", "payment captured 1", null, `🔔  Webhook received: ${pi.object} ${pi.status}!`);
+        this.eventLog.savelog("stripePatments.ts", "PaymentIntentSucceeded", "payment captured 2", null, "💰 Payment captured!");
 
         let invoicesDb = Container.get(InvoicesDb);
 

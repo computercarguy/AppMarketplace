@@ -8,6 +8,10 @@ export default async function useAwsSecrets (savelog: Function, cbfunc: any) {
         return;
     }
     
+    if (global.secrets) {
+        return global.secrets;
+    }
+
     console.log("getting secrets");
     if (savelog) {
         //savelog("useAwsSecrets.js", "useAwsSecrets", "query", null, "getting secrets");
@@ -30,6 +34,8 @@ export default async function useAwsSecrets (savelog: Function, cbfunc: any) {
         }
 
         const secret = JSON.parse(response.SecretString);
+        global.secrets = secret;
+        
         if (cbfunc) {
             cbfunc(secret);
         }
