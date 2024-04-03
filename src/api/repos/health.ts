@@ -12,6 +12,7 @@ export class Health {
         this.dbWrapper.healthCheck((response: ApiResponse) => {
             if (response.error) {
                 this.dbWrapper.savelog("health.ts", "getHealth", "healthCheck", null, JSON.stringify(response.error));
+                useSendResponse(res, "App Marketplace is running with issues.", JSON.stringify(response.error));
                 return;
             }
 
