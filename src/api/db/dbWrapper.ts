@@ -9,14 +9,10 @@ export class DbWrapper {
     private pool: Pool = null;
 
     async savelog(filename: string, methodname: string, stage: string, userid: string, message: string) {
-        if (!this.pool) {
-            return;
-        }
-
         const insertLog = `INSERT INTO eventlog (message, datelogged,) VALUES (':message', NOW());`;
         let values = {message: `${filename}: ${methodname}: ${stage}: ${userid}: ${message}`};
     
-        this.pool.query(insertLog, values);
+        this.query(insertLog, values, null);
     }
 
     async query(queryString: string, queryValues: object, cbFunc: (arg0: { error: any; results: any; }) => void) {
@@ -26,16 +22,23 @@ export class DbWrapper {
         }
 
         let parameterizedQuery = this.queryFormat(queryString, queryValues);
-        this.pool.query(parameterizedQuery, (error, results) => {
-            if (error) {
-                this.savelog("dbWrapper.ts", "query", "query", null, JSON.stringify(error));
-                return;
-            }
+        try 
+        {
+            this.pool.query(parameterizedQuery, (error, results) => {
+                if (error) {
+                    this.savelog("dbWrapper.ts", "query", "query", null, JSON.stringify(error));
+                    return;
+                }
 
-            if (cbFunc) {
-                cbFunc(this.setResponse(error, results));
-            }
-        });
+                if (cbFunc) {
+                    cbFunc(this.setResponse(error, results));
+                }
+            });
+        }
+        catch (err)
+        {
+            console.log(err);
+        }
     }
 
     private queryFormat(query: string, values: object) {
@@ -53,11 +56,6 @@ export class DbWrapper {
     }
 
     async healthCheck(cbFunc: any) {
-        if (!this.pool) {
-            let secrets = await useAwsSecrets(this.savelog, null);
-            this.setPool(secrets);
-        }
-
         this.query("SELECT 'healthCheckPassed'", null, cbFunc);
     }
 
@@ -70,13 +68,17 @@ export class DbWrapper {
 
     private setPool(secrets) {
         if (secrets) {
-            this.pool = createPool({
-                user: secrets.user,
-                host: secrets.host,
-                database: secrets.database,
-                password: secrets.password,
-                port: secrets.port
-            });
+            try {
+                this.pool = createPool({
+                    user: secrets.user,
+                    host: secrets.host,
+                    database: secrets.database,
+                    password: secrets.password,
+                    port: secrets.port
+                });
+            } catch (err) {
+                console.log(err);
+            }
 
             //this.savelog("dbWrapper.ts", "setPool", null, null, JSON.stringify(this.pool || ""));
         }
