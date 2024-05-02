@@ -12,7 +12,7 @@ export default async function useFetch(url: string, method: string, authToken: s
     if (contentType) {
         headerObject["Content-Type"] = contentType;
     }
-console.log(url);
+//console.log(url);
     let response = fetch(url, { 
         method: method,
         headers: new Headers(headerObject),

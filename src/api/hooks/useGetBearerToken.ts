@@ -8,7 +8,7 @@ export default function useGetBearerToken(req: Request) {
     let tokens = req.headers.authorization.split(" ");
     
     if (tokens[0].toLowerCase() == "bearer") {
-        console.log(tokens[1]);
+        //console.log(tokens[1]);
         return tokens[1];
     }
 

@@ -65,7 +65,8 @@ export class Authentication {
                 return null;
             }
 
-            this.loginUrl = secrets.login;
+            this.loginUrl = secrets.login + (secrets.login.slice(-1) === "/" ? "" : "/");
+            //console.log(this.loginUrl);
         }
 
         return this.loginUrl;

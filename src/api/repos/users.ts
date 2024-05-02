@@ -144,7 +144,8 @@ export class Users {
     private async getLoginUrl() {
         if (this.loginUrl === null) {
             let secrets = await useAwsSecrets(this.eventLog.savelog, null);
-            this.loginUrl = secrets.login;
+            this.loginUrl = secrets.login + (secrets.login.slice(-1) === "/" ? "" : "/");
+            //console.log(this.loginUrl);
         }
 
         return this.loginUrl;
