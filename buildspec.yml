@@ -9,6 +9,7 @@ phases:
     commands:
       - echo Build started on `date`
       - npm run build
+      - node src/api/swagger.js
       - npm run buildNode
       - npm run copyconfigfiles
   post_build:

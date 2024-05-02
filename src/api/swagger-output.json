@@ -5,12 +5,20 @@
     "description": "",
     "version": "1.0.0"
   },
-  "host": "localhost:3002",
+  "host": "localhost:8080",
   "basePath": "/",
   "schemes": [
     "http",
     "https"
   ],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Enter the token with the `Bearer: ` prefix, e.g. \"Bearer abcde12345\"."
+    }
+  },
   "paths": {
     "/auth/login": {
       "post": {
@@ -281,6 +289,16 @@
         }
       }
     },
+    "/credits/all": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/credits/update": {
       "post": {
         "description": "",
@@ -301,5 +319,10 @@
         }
       }
     }
-  }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
 }

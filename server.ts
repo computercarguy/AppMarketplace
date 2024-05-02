@@ -38,8 +38,8 @@ app.use(new PaymentMethodImagesRouter().setupRouter());
 app.use(new HealthRouter().setupRouter());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-app.use(express.static(__dirname  + '/build'));
+// console.log(__dirname + '/build');
+app.use(express.static(__dirname + '/build'));
 
 app.listen(port, () => {
     console.log(`Server running. Port: ${port}`);

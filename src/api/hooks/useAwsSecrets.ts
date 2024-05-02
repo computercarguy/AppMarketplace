@@ -2,6 +2,7 @@ import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-sec
 
 const secretName = process.env.secretName;
 const client = new SecretsManagerClient({region: "us-west-2"});
+// console.log("secretName: " + secretName);
 
 export default async function useAwsSecrets (savelog: Function, cbfunc: any) {
     if (!secretName) {
@@ -35,7 +36,7 @@ export default async function useAwsSecrets (savelog: Function, cbfunc: any) {
 
         const secret = JSON.parse(response.SecretString);
         global.secrets = secret;
-        
+        // console.log(secret);
         if (cbfunc) {
             cbfunc(secret);
         }
