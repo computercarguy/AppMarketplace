@@ -6,11 +6,14 @@ import useGetBearerToken from '../hooks/useGetBearerToken';
 import { Request } from "express-serve-static-core";
 import useAwsSecrets from '../hooks/useAwsSecrets';
 import { EventLog } from "./eventLog";
+import { UtilitiesCreditsDb } from "../db/utilitiesCreditsDb";
+import { UtilitiesCreditsData } from "../models/UtilitiesCreditsData";
 
 @Service()
 export class Authentication {
     private loginUrl: String = null;
     private eventLog = Container.get(EventLog);
+    private utilitiesCreditsDb = Container.get(UtilitiesCreditsDb);
 
     async getUserId(req: Request, cbFunc: Function) {
         let token = useGetBearerToken(req);
@@ -30,8 +33,33 @@ export class Authentication {
 
     async registerUser(req: Request, cbFunc: Function) {
         let url = await this.getLoginUrl() + settings.urls.auth.register;
-        
-        useFetch(url, "post", null, JSON.stringify(req.body), cbFunc, "application/json; charset=utf-8");
+
+        let callback = (response: ApiResponse) => {
+            
+            if (!response.error) {
+                let id: string;
+                if (typeof response.message == "string") {
+                    let splitSuccess = response.message.split(":");
+                    id = splitSuccess[1].trim();
+                    response.message = splitSuccess[0];
+                }
+                else if (typeof response.message == "object") {
+                    id = response.message["userId"];
+                }
+                
+                let data = {
+                    OAuthUserId: parseInt(id),
+                    UtilitiesId: 1,
+                    QuantityPurchased: 3
+                };
+
+                this.utilitiesCreditsDb.upsert(data as UtilitiesCreditsData, null);
+            }
+
+            cbFunc(response);
+        };
+
+        useFetch(url, "post", null, JSON.stringify(req.body), callback, "application/json; charset=utf-8");
     }
 
     async validateUser(req: Request, cbFunc: Function) {
