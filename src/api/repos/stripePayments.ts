@@ -15,7 +15,7 @@ import { UtilitiesCreditsDb } from "../db/utilitiesCreditsDb";
 import { UtilitiesCreditsData } from "../models/UtilitiesCreditsData";
 import { InvoiceItem } from "../models/InvoiceItem";
 import { EventLog } from "./eventLog";
-import useAwsSecrets from "../hooks/useAwsSecrets";
+import useSecrets from "../hooks/useSecrets";
 import { UtilityItems } from "../models/UtilityItems";
 import { Users } from "./users";
 import { PaymentMethodDataDTO } from "../models/PaymentMethodDataDTO";
@@ -36,13 +36,13 @@ export class StripePayments {
         },
         typescript: true,
     };
-    
+
     constructor() {
         this.GetAwsSecrets();
     }
-    
+
     private async GetAwsSecrets() {
-        useAwsSecrets(this.eventLog.savelog, (secrets) => {
+        useSecrets(this.eventLog.savelog, (secrets) => {
             this.stripeKey = secrets.stripekey;
             this.stripe = new Stripe(secrets.stripekey_private, this.config);
         });
@@ -130,7 +130,7 @@ export class StripePayments {
                     null
                 );
             });
-        }); 
+        });
     }
 
     async updatePaymentIntent(req: Request, res: Response) {
@@ -234,7 +234,7 @@ export class StripePayments {
                 req.headers["stripe-signature"],
                 process.env.STRIPE_WEBHOOK_SECRET
             );
-        } 
+        }
         catch (err) {
             this.eventLog.savelog("stripePatments.ts", "webhook", "Webhook signature", null, `⚠️  Webhook signature verification failed.`);
             res.sendStatus(400);
@@ -274,7 +274,7 @@ export class StripePayments {
                 res.sendStatus(200);
                 return;
             }
-            
+
             invoicesDb.confirmInvoiceByPaymentIdentifier(pi.id, null);
             invoicesDb.getInvoiceByPaymentIdentifier(userId.results[0], paymentIdentifier, (results) => {
                 let utilitiesCreditsDb = Container.get(UtilitiesCreditsDb);
@@ -293,11 +293,11 @@ export class StripePayments {
 
     private getTotal(body: UtilityPurchase) {
         let total = 0;
-        
+
         body.Items.forEach(item => {
             total += item.Price * item.Qty;
         });
-    
+
         return total;
     }
 

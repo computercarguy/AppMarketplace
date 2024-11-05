@@ -5,7 +5,7 @@ import { ApiResponse } from "../models/ApiResponse";
 import useGetBearerToken from "../hooks/useGetBearerToken";
 import * as settings from '../../Settings.json';
 import useFetch from "../hooks/useFetch";
-import useAwsSecrets from "../hooks/useAwsSecrets";
+import useSecrets from "../hooks/useSecrets";
 import { EventLog } from "./eventLog";
 
 @Service()
@@ -140,10 +140,10 @@ export class Users {
         return response.message;
     }
 
-    
+
     private async getLoginUrl() {
         if (this.loginUrl === null) {
-            let secrets = await useAwsSecrets(this.eventLog.savelog, null);
+            let secrets = await useSecrets(this.eventLog.savelog, null);
             this.loginUrl = secrets.login + (secrets.login.slice(-1) === "/" ? "" : "/");
             //console.log(this.loginUrl);
         }

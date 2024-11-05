@@ -1,9 +1,9 @@
-import { Component } from 'react';
-import '../../App.css';
-import { DataGrid } from '@mui/x-data-grid';
-import settings from '../../Settings.json';
+import React, { Component } from "react";
+import "../../App.css";
+import { DataGrid } from "@mui/x-data-grid";
+import settings from "../../Settings.json";
 
-class CreditsAvailable extends Component {
+export default class CreditsAvailable extends Component {
     constructor(props) {
         super(props);
 
@@ -18,30 +18,30 @@ class CreditsAvailable extends Component {
     };
 
     componentDidMount() {
-        const token = sessionStorage.getItem('token');
+        const token = sessionStorage.getItem("token");
         const url = settings.urls.credits.getAllCredits;
         const me = this;
 
-        fetch(url, { 
-            method: 'get', 
+        fetch(url, {
+            method: "get",
             headers: new Headers({
-                'Authorization': token
+                Authorization: token
             })
-        }).then(function(res) {
-            return res.json();
         })
-        .then(function(resJson) {
-            if (resJson && resJson.message) {
-                resJson.message.sort((a,b) => a.Name > b.Name ? 1 : -1);
-                me.setState({AvailableCredits: resJson.message});
-            }
-            else {
-                console.log(resJson);
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        });
+            .then(function (res) {
+                return res.json();
+            })
+            .then(function (resJson) {
+                if (resJson && resJson.message) {
+                    resJson.message.sort((a, b) => (a.Name > b.Name ? 1 : -1));
+                    me.setState({ AvailableCredits: resJson.message });
+                } else {
+                    console.log(resJson);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     render() {
@@ -52,9 +52,14 @@ class CreditsAvailable extends Component {
                     pageSize={10}
                     autoHeight={true}
                     getRowId={(row) => row.Id}
-                    columns={[{ field: 'Name', headerName: "Name", width: 300 }, 
-                        { field: 'Available', headerName: "Available", width: 75 }, 
-                        { field: 'QuantityUsed', headerName: "Used", width: 50 }
+                    columns={[
+                        { field: "Name", headerName: "Name", width: 300 },
+                        {
+                            field: "Available",
+                            headerName: "Available",
+                            width: 75
+                        },
+                        { field: "QuantityUsed", headerName: "Used", width: 50 }
                     ]}
                     rows={this.state.AvailableCredits}
                 />
@@ -62,5 +67,3 @@ class CreditsAvailable extends Component {
         );
     }
 }
-
-export default CreditsAvailable;

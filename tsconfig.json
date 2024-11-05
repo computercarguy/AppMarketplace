@@ -6,6 +6,9 @@
         "strictPropertyInitialization": false,
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
-        "outDir": "nodeBuild/"
+        "outDir": "nodeBuild/",
+        "types": [
+            "node"
+        ]
     }
 }

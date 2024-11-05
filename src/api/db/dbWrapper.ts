@@ -2,7 +2,7 @@
 
 import { OkPacket, Pool, ProcedureCallPacket, QueryError, ResultSetHeader, RowDataPacket, createPool } from 'mysql2';
 import { Service } from 'typedi';
-import useAwsSecrets from '../hooks/useAwsSecrets';
+import useSecrets from '../hooks/useSecrets';
 
 @Service()
 export class DbWrapper {
@@ -11,18 +11,18 @@ export class DbWrapper {
     async savelog(filename: string, methodname: string, stage: string, userid: string, message: string) {
         const insertLog = `INSERT INTO eventlog (message, datelogged,) VALUES (':message', NOW());`;
         let values = {message: `${filename}: ${methodname}: ${stage}: ${userid}: ${message}`};
-    
+
         this.query(insertLog, values, null);
     }
 
     async query(queryString: string, queryValues: object, cbFunc: (arg0: { error: any; results: any; }) => void) {
         if (!this.pool) {
-            let secrets = await useAwsSecrets(null, null);
+            let secrets = await useSecrets(null, null);
             this.setPool(secrets);
         }
 
         let parameterizedQuery = this.queryFormat(queryString, queryValues);
-        try 
+        try
         {
             this.pool.query(parameterizedQuery, (error, results) => {
                 if (error) {
@@ -50,12 +50,12 @@ export class DbWrapper {
         if (!values) {
             return query;
         }
-        
+
         return query.replace(/\:(\w+)/g, (txt: string, key: string) => {
             if (values.hasOwnProperty(key)) {
                 return encodeURI(values[key as keyof typeof values]).replace(/%20/g,  " ").replace(/%3A/g, ":");
             }
-            
+
             return txt;
         });
     }

@@ -4,7 +4,7 @@ import useFetch from '../hooks/useFetch';
 import { ApiResponse } from '../models/ApiResponse';
 import useGetBearerToken from '../hooks/useGetBearerToken';
 import { Request } from "express-serve-static-core";
-import useAwsSecrets from '../hooks/useAwsSecrets';
+import useSecrets from '../hooks/useSecrets';
 import { EventLog } from "./eventLog";
 import { UtilitiesCreditsDb } from "../db/utilitiesCreditsDb";
 import { UtilitiesCreditsData } from "../models/UtilitiesCreditsData";
@@ -35,7 +35,7 @@ export class Authentication {
         let url = await this.getLoginUrl() + settings.urls.auth.register;
 
         let callback = (response: ApiResponse) => {
-            
+
             if (!response.error) {
                 let id: string;
                 if (typeof response.message == "string") {
@@ -46,7 +46,7 @@ export class Authentication {
                 else if (typeof response.message == "object") {
                     id = response.message["userId"];
                 }
-                
+
                 let data = {
                     OAuthUserId: parseInt(id),
                     UtilitiesId: 1,
@@ -85,9 +85,14 @@ export class Authentication {
         useFetch(url, "get", null, null, cbFunc, "application/x-www-form-urlencoded");
     }
 
+    async checkUsernameEmail(req: Request, cbFunc: Function) {
+        let url = await this.getLoginUrl() + settings.urls.auth.checkUsernameEmail;
+        useFetch(url, "post", null, req.body, cbFunc, "application/x-www-form-urlencoded");
+    }
+
     private async getLoginUrl() {
         if (this.loginUrl === null) {
-            let secrets = await useAwsSecrets(this.eventLog.savelog, null);
+            let secrets = await useSecrets(this.eventLog.savelog, null);
 
             if (!secrets) {
                 return null;

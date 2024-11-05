@@ -1,20 +1,19 @@
-import settings from '../Settings.json';
+import settings from "../Settings.json";
 
-const useValidateLogin = (authToken, setUser) => {
+export default useValidateLogin = (authToken, setUser) => {
     const url = settings.urls.auth.validateUser;
 
-    fetch(url, { 
-        method: 'get', 
+    fetch(url, {
+        method: "get",
         headers: new Headers({
-            'Authorization': authToken
+            Authorization: authToken
         })
-    }).then(function(res) {
-        return res.json();
     })
-    .then(function(resJson) {
-        setUser(resJson);
-        return;
-    });
-}
-
-export default useValidateLogin;
+        .then(function (res) {
+            return res.json();
+        })
+        .then(function (resJson) {
+            setUser(resJson);
+            return;
+        });
+};

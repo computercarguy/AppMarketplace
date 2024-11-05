@@ -75,4 +75,13 @@ export class Authenticate {
             );
         });
     }
-}
+
+    checkUsernameEmail(req: Request, res: Response) {
+        auth.checkUsernameEmail(req, (passwordcomplexity: ApiResponse) => {
+            useSendResponse(
+                res,
+                passwordcomplexity.message,
+                null
+            );
+        });
+    }}

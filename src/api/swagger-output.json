@@ -5,7 +5,7 @@
     "description": "",
     "version": "1.0.0"
   },
-  "host": "localhost:8080",
+  "host": "appmarketplace.ericsgear.com",
   "basePath": "/",
   "schemes": [
     "http",
@@ -62,6 +62,16 @@
       }
     },
     "/auth/register": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/auth/checkUsernameEmail": {
       "post": {
         "description": "",
         "responses": {

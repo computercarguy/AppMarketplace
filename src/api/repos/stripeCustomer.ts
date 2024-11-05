@@ -1,16 +1,16 @@
 import Container, { Service } from "typedi";
 import Stripe from 'stripe';
 import { PaymentOptionsDb } from "../db/paymentOptionsDb";
-import useAwsSecrets from "../hooks/useAwsSecrets";
+import useSecrets from "../hooks/useSecrets";
 import { OAuthUserData } from "../models/OAuthUserData";
 import { EventLog } from "./eventLog";
 
 @Service()
 export class StripeCustomer {
     private eventLog = Container.get(EventLog);
-    
+
     private config:Stripe.StripeConfig = {
-        apiVersion: '2023-10-16',
+        apiVersion: '2024-10-28.acacia',
         appInfo: { // For sample support and debugging, not required for production:
         name: "stripe-samples/accept-a-payment",
         url: "https://github.com/stripe-samples",
@@ -19,7 +19,7 @@ export class StripeCustomer {
         typescript: true,
     };
 
-    
+
     async createCustomer(user: OAuthUserData) {
         var stripe = await this.GetAwsSecrets();
 
@@ -30,7 +30,7 @@ export class StripeCustomer {
             address: {
                 line1: user.Address1,
                 line2: user.Address2,
-                city: user.City, 
+                city: user.City,
                 state: user.State,
                 postal_code: user.Zipcode,
                 country: user.Country
@@ -44,7 +44,7 @@ export class StripeCustomer {
     }
 
     private async GetAwsSecrets() {
-        return await useAwsSecrets(this.eventLog.savelog, (secrets) => {
+        return await useSecrets(this.eventLog.savelog, (secrets) => {
             return new Stripe(secrets.stripekey_private, this.config);
         });
     }
