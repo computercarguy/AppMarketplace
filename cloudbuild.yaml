@@ -2,15 +2,6 @@ steps:
   - name: 'node'
     entrypoint: 'npm'
     args: ['install', '--legacy-peer-deps']
-  - name: 'node'
-    entrypoint: 'node'
-    args: ['src/api/swagger.js']
-  - name: 'node'
-    entrypoint: 'npm'
-    args: ['run', 'buildNode']
-  - name: 'node'
-    entrypoint: 'npm'
-    args: ['run', 'copyconfigfiles']
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args: ['-c', 'gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy']
