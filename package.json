@@ -20,8 +20,6 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
-    "ajv": "^8.17.1",
-    "ajv-keywords": "^5.1.0",
     "copyfiles": "^2.4.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -29,14 +27,12 @@
     "mysql2": "^3.11.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-scripts": "^5.0.1",
     "reflect-metadata": "^0.2.2",
     "stripe": "^17.3.1",
     "styled-components": "^6.1.13",
     "swagger": "^0.7.5",
     "swagger-ui-express": "^5.0.1",
     "typedi": "^0.10.0",
-    "typescript": "^5.6.3",
     "web-vitals": "^4.2.4"
   },
   "scripts": {
@@ -69,6 +65,7 @@
     "@types/express-session": "^1.18.0",
     "@types/node": "^22.9.0",
     "@types/swagger-ui-express": "^4.1.7",
+    "typescript": "^5.6.3",
     "swagger-autogen": "^2.23.7"
   },
   "compilerOptions": {
