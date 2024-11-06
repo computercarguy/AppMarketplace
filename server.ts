@@ -39,9 +39,9 @@ app.use(new HealthRouter().setupRouter());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // console.log(__dirname + '/build');
-//app.use(express.static(__dirname + '/build'));
-console.log(__dirname + '/public');
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/build'));
+// console.log(__dirname + '/public');
+// app.use(express.static(__dirname + '/public'));
 
 app.listen(port, () => {
     console.log(`Server running. Port: ${port}`);
