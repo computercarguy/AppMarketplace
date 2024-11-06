@@ -32,12 +32,14 @@
     "styled-components": "^6.1.13",
     "swagger": "^0.7.5",
     "swagger-ui-express": "^5.0.1",
+    "ts-node": "^10.9.2",
     "typedi": "^0.10.0",
     "web-vitals": "^4.2.4"
   },
   "scripts": {
     "startNode": "node nodeBuild/server.js",
-    "start": "node nodeBuild/server.js",
+    "start": "ts-node server.ts",
+    "startJS": "node nodeBuild/server.js",
     "startReact": "react-scripts start",
     "build": "BUILD_PATH='nodeBuild/build/' react-scripts build",
     "buildWin": "SET BUILD_PATH=nodeBuild/build&& react-scripts build",
@@ -65,8 +67,8 @@
     "@types/express-session": "^1.18.0",
     "@types/node": "^22.9.0",
     "@types/swagger-ui-express": "^4.1.7",
-    "typescript": "^5.6.3",
-    "swagger-autogen": "^2.23.7"
+    "swagger-autogen": "^2.23.7",
+    "typescript": "^5.6.3"
   },
   "compilerOptions": {
     "module": "NodeNext",
