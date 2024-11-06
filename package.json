@@ -37,7 +37,8 @@
   },
   "scripts": {
     "startNode": "node nodeBuild/server.js",
-    "start": "react-scripts start",
+    "start": "node nodeBuild/server.js",
+    "startReact": "react-scripts start",
     "build": "BUILD_PATH='nodeBuild/build/' react-scripts build",
     "buildWin": "SET BUILD_PATH=nodeBuild/build&& react-scripts build",
     "buildNode": "tsc",
