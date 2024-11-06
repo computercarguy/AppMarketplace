@@ -43,7 +43,7 @@
     "startNode": "node nodeBuild/server.js",
     "start": "node nodeBuild/server.js",
     "startReact": "react-scripts start",
-    "build": "BUILD_PATH='nodeBuild/build/' react-scripts build",
+    "build": "BUILD_PATH='nodeBuild/build/' react-scripts build --legacy-peer-deps",
     "buildWin": "SET BUILD_PATH=nodeBuild/build&& react-scripts build",
     "buildNode": "tsc",
     "gcp-build": "tsc",
