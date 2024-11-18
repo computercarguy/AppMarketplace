@@ -3,7 +3,7 @@ const hosttype = process.env.hostType;
 // console.log("secretName: " + secretName);
 // console.log("hosttype: " + hosttype);
 
-export default async function useSecrets (savelog: Function, cbfunc: any) {
+export default async function useSecrets (savelog?: Function, cbfunc?: any) {
     if (!secretName) {
         return;
     }
