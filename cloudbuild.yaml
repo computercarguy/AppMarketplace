@@ -4,6 +4,12 @@ steps:
     args: ['install']
   - name: 'node'
     entrypoint: 'npm'
+    args: ['-v']
+  - name: 'node'
+    entrypoint: 'node'
+    args: ['-v']
+  - name: 'node'
+    entrypoint: 'npm'
     args: ['run', 'buildGCP']
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'

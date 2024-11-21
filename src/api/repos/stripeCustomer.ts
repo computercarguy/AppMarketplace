@@ -10,7 +10,7 @@ export class StripeCustomer {
     private eventLog = Container.get(EventLog);
 
     private config:Stripe.StripeConfig = {
-        apiVersion: '2024-10-28.acacia',
+        apiVersion: '2024-11-20.acacia',
         appInfo: { // For sample support and debugging, not required for production:
         name: "stripe-samples/accept-a-payment",
         url: "https://github.com/stripe-samples",
