@@ -25,7 +25,8 @@ export class Users {
             useSendResponse(
                 res,
                 response.message,
-                response.error
+                response.error,
+                response.status
             );
         }, "application/json; charset=utf-8");
     }
@@ -137,7 +138,7 @@ export class Users {
         let url = await this.getLoginUrl() + settings.urls.user.getUser;
         let response = await useFetch(url, "get", token, null, null);
 
-        return response.message;
+        return response ? response.message : null;
     }
 
 

@@ -19,6 +19,7 @@ import useSecrets from "../hooks/useSecrets";
 import { UtilityItems } from "../models/UtilityItems";
 import { Users } from "./users";
 import { PaymentMethodDataDTO } from "../models/PaymentMethodDataDTO";
+import { OAuthUserData } from "../models/OAuthUserData";
 
 @Service()
 export class StripePayments {
@@ -306,7 +307,11 @@ export class StripePayments {
         let users = Container.get(Users);
         let user = await users.getOAuthUser(req);
 
-        return await stripeCustomer.createCustomer(user);
+        if (user && typeof user !== "string") {
+            return await stripeCustomer.createCustomer(user as OAuthUserData);
+        } else {
+            return null;
+        }
     }
 
     private ToPaymentMethodData(paymentMethods: Stripe.PaymentMethod[]) {
