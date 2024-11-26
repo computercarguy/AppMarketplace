@@ -1,6 +1,6 @@
 import settings from "../Settings.json";
 
-export default useValidateLogin = (authToken, setUser) => {
+export default function useValidateLogin(authToken, setUser) {
     const url = settings.urls.auth.validateUser;
 
     fetch(url, {
@@ -16,4 +16,4 @@ export default useValidateLogin = (authToken, setUser) => {
             setUser(resJson);
             return;
         });
-};
+}
